@@ -6,6 +6,7 @@ try {
    $redis->connect('127.0.0.1');
    $redis->select(1);
 } catch (Exception $e) {
+	echo $e->getMessage();
 	die('连不上Redis');
 }
 
