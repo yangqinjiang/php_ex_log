@@ -9,8 +9,11 @@ $c = array(
 		)
 	);
    $redis_db = $c['settings']['redis_db'];
-   $redis = new redis();
+   $redis = new Redis();
    $redis->connect($redis_db['host'],$redis_db['port']);
+   if(empty($redis->ping())){
+   		die('连不上Redis');
+   }
    $redis->select($redis_db['db_id']);
 
    //列出数据
