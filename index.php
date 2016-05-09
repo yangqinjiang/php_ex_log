@@ -1,11 +1,14 @@
 <?php
 ini_set('display_errors','1');
 error_reporting(E_ALL);
-   $redis = new Redis();
+try {
+	$redis = new Redis();
    $redis->connect('127.0.0.1');
-   if(empty($redis->ping())){
-   		die('连不上Redis');
-   }
+
+} catch (Exception $e) {
+	die('连不上Redis');
+}
+
    $redis->select(1);
 
    //列出数据
