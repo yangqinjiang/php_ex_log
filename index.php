@@ -1,20 +1,11 @@
 <?php
-$c = array(
-		'settings'=>array(
-			'redis_db'=>array(
-					'host'=>'localhost',
-					'port' => 6379,
-					'db_id' => 1
-				)
-		)
-	);
-   $redis_db = $c['settings']['redis_db'];
+
    $redis = new Redis();
-   $redis->connect($redis_db['host'],$redis_db['port']);
+   $redis->connect('127.0.0.1');
    if(empty($redis->ping())){
    		die('连不上Redis');
    }
-   $redis->select($redis_db['db_id']);
+   $redis->select(1);
 
    //列出数据
    $max_post_id = $redis->get('global:ex_postid');
