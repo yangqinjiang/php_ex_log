@@ -9,7 +9,7 @@ $c = array(
 		)
 	);
    $redis_db = $c['settings']['redis_db'];
-   $redis = new Redis();
+   $redis = new redis();
    $redis->connect($redis_db['host'],$redis_db['port']);
    $redis->select($redis_db['db_id']);
 
