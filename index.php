@@ -4,12 +4,12 @@ error_reporting(E_ALL);
 try {
 	$redis = new Redis();
    $redis->connect('127.0.0.1');
-
+   $redis->select(1);
 } catch (Exception $e) {
 	die('连不上Redis');
 }
 
-   $redis->select(1);
+
 
    //列出数据
    $max_post_id = $redis->get('global:ex_postid');
