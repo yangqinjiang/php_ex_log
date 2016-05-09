@@ -1,5 +1,6 @@
 <?php
-
+ini_set('display_errors','1');
+error_reporting(E_ALL);
    $redis = new Redis();
    $redis->connect('127.0.0.1');
    if(empty($redis->ping())){
