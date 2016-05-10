@@ -26,7 +26,10 @@ class Tracer
         $ex_postid = $this->redis->incr('global:ex_postid:'.$prefix);
         $this->redis->hMset('ex_post:postid:'.$prefix.':'.$ex_postid,$data);
     }
-
+    public function kill($who,$key)
+    {
+        $this->redis->del($key);
+    }
     public function __destruct()
     {
         $this->redis->close();

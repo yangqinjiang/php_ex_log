@@ -47,7 +47,13 @@ $app->get('/{who}', function ($request, $response, $args) {
 	include 'tpl.php';    
     return $response;
 });
+$app->get('/kill/{who}/{key}',function ($request, $response, $args){
+	$who = $args['who'];
+	$key = $args['key'];
+	$this->tracer->kill($who,$key);
+	header('location: /'.$who);exit;
 
+});
 $app->post('/record',function($request, $response, $args){
 	$data = $request->getParsedBody();
 	$msg = $data['msg'];
