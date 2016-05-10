@@ -2,7 +2,7 @@
 <html>
 <head>
 	<title>异常错误显示</title>
-	<meta http-equiv="refresh" content="10" />
+	<meta http-equiv="refresh" content="30" />
 </head>
 <body>
 <?php 
