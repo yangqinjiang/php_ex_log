@@ -16,7 +16,9 @@ if($_SERVER['SERVER_ADDR'] == '127.0.0.1'){
 
 $app = new Slim\App(["settings" => $config]);
 require_once 'container.config.php';
-
+$app->get('/', function ($request, $response, $args) {
+	echo "hello world";
+});
 $app->get('/{who}', function ($request, $response, $args) {
 	try {
 		$redis = new Redis();
@@ -26,9 +28,9 @@ $app->get('/{who}', function ($request, $response, $args) {
 		echo $e->getMessage();
 		die('连不上Redis');
 	}
-
+		$prefix_pool = $this->trace_pool;
 		$who = $args['who'];
-		if(!in_array(strtoupper($who), array('A','B','C','D'))){
+		if(!in_array(strtoupper($who), array_values($prefix_pool))){
 			$who = 'A';
 		}
 		$list = $redis->keys('ex_post:postid:'.$who.':*');
@@ -36,10 +38,6 @@ $app->get('/{who}', function ($request, $response, $args) {
 		foreach ($list as $key => $value) {
 			$raw_msg[] = $redis->hmget($value,array('msg'));
 		}
-		
-		// exit;
-
-
 	include 'tpl.php';    
     return $response;
 });
@@ -52,7 +50,7 @@ $app->post('/record',function($request, $response, $args){
 		die('数据格式有误');
 	}
 	$uri = $request->getUri();
-	$prefix_pool = array('trace.qbgoo.com'=>'A','user.cengfan7.com'=>'B','lc.cengfan7.com'=>'C','cfq.cengfan7.com'=>'D');
+	$prefix_pool = $this->trace_pool;
 
 
 	$this->tracer->record(array('msg'=>$msg),empty($prefix_pool[$prefix_key]) ? '' : $prefix_pool[$prefix_key]);

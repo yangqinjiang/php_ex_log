@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>你好</title>
+	<title>异常错误显示</title>
+	<meta http-equiv="refresh" content="10" />
 </head>
 <body>
 <a href="/A">trace.qbgoo.com</a>
