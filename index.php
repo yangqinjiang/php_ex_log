@@ -28,7 +28,7 @@ $app->get('/', function ($request, $response, $args) {
 	}
 
 		$who = 'D';
-		$list = $redis->keys('ex_post:postid:'.$who.':* ');
+		$list = $redis->keys('ex_post:postid:'.$who.':*');
 		print_r($list);exit;
 
 
