@@ -42,9 +42,8 @@ $app->get('/{who}', function ($request, $response, $args) {
 			if(empty($rr['msg'])){
 				continue;
 			}
-			$raw_msg[] = array($rr,$value);
+			$raw_msg[$value] = $rr;
 		}
-print_r($raw_msg);exit;
 	include 'tpl.php';    
     return $response;
 });
