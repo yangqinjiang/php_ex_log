@@ -29,7 +29,13 @@ $app->get('/', function ($request, $response, $args) {
 
 		$who = 'D';
 		$list = $redis->keys('ex_post:postid:'.$who.':*');
-		print_r($list);exit;
+		print_r($list);
+		$raw_msg = array();
+		foreach ($list as $key => $value) {
+			$raw_msg[] = $redis->hmget($value,array('msg'));
+		}
+		print_r($raw_msg);
+		exit;
 
 
 	   //列出数据
