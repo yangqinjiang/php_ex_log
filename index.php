@@ -39,6 +39,7 @@ $app->get('/{who}', function ($request, $response, $args) {
 		foreach ($list as $key => $value) {
 			$raw_msg[] = $redis->hmget($value,array('msg'));
 		}
+		print_r($raw_msg);
 	include 'tpl.php';    
     return $response;
 });
