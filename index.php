@@ -35,6 +35,7 @@ $app->get('/{who}', function ($request, $response, $args) {
 			$who = 'A';
 		}
 		$list = $redis->keys('ex_post:postid:'.$who.':*');
+		print_r($list);
 		$list_count = count($list);
 		$raw_msg = array();
 		for ($i=1; $i <=$list_count+1 ; $i++) { 
