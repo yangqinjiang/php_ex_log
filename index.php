@@ -37,7 +37,7 @@ $app->get('/{who}', function ($request, $response, $args) {
 		$list = $redis->keys('ex_post:postid:'.$who.':*');
 		$list_count = count($list);
 		$raw_msg = array();
-		for ($i=1; $i <=$list_count ; $i++) { 
+		for ($i=1; $i <=$list_count+1 ; $i++) { 
 			$rr = $redis->hmget('ex_post:postid:'.$who.':'.$i,array('msg'));
 			if(empty($rr['msg'])){
 				continue;
