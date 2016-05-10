@@ -29,26 +29,14 @@ $app->get('/', function ($request, $response, $args) {
 
 		$who = 'D';
 		$list = $redis->keys('ex_post:postid:'.$who.':*');
-		print_r($list);
 		$raw_msg = array();
 		foreach ($list as $key => $value) {
 			$raw_msg[] = $redis->hmget($value,array('msg'));
 		}
-		print_r($raw_msg);
-		exit;
+		
+		// exit;
 
 
-	   //列出数据
-	   $max_post_id = $redis->get('global:ex_postid');
-	   $max_post_id = intval($max_post_id);
-	   echo '共  '.$max_post_id.'条<br/>';
-	   echo '<meta http-equiv="refresh" content="10" />';
-	   for ($i=1; $i <= $max_post_id; $i++) {
-	   	$r = $redis->hmget('ex_post:postid:'.$i,array('msg'));
-	   	echo "<pre>";
-	   	echo $r['msg'];
-	   	echo "</pre>";
-	   }
 	include 'tpl.php';    
     return $response;
 });
