@@ -13,8 +13,6 @@ if($_SERVER['SERVER_ADDR'] == '127.0.0.1'){
 }else{
     include_once 'config.online.php';
 }
-require_once 'UserController.class.php';
-require 'model/member.class.php';
 
 $app = new Slim\App(["settings" => $config]);
 require_once 'container.config.php';
@@ -73,12 +71,17 @@ $app->get('/', function ($request, $response, $args) {
 
 $app->post('/record',function($request, $response, $args){
 	$data = $request->getParsedBody();
-	if(empty($data['msg'])){
+	$msg = $data['msg'];
+	if( empty($data['msg']) || $msg == 'Array'){
 		die('数据格式有误');
 	}
 	$uri = $request->getUri();
 	$prefix_key = $uri->getHost();
-	$prefix_pool = array('trace.qbgoo.com'=>'A');
-	$this->tracer->record(array('msg'=>$data['msg']),$prefix_pool[$prefix_key]);
+	$prefix_pool = array('trace.qbgoo.com'=>'A','user.cengfan7.com'=>'B');
+
+
+	$this->tracer->record(array('msg'=>$msg),empty($prefix_pool[$prefix_key]) ? '' : $prefix_pool[$prefix_key]);
+	$response->withJson(array('code'=>200,'msg'=>$msg));
+	return $response;
 });
 $app->run();
