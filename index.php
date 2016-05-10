@@ -17,7 +17,7 @@ if($_SERVER['SERVER_ADDR'] == '127.0.0.1'){
 $app = new Slim\App(["settings" => $config]);
 require_once 'container.config.php';
 
-$app->get('/', function ($request, $response, $args) {
+$app->get('/{who}', function ($request, $response, $args) {
 	try {
 		$redis = new Redis();
 	   $redis->connect('127.0.0.1');
@@ -27,7 +27,10 @@ $app->get('/', function ($request, $response, $args) {
 		die('连不上Redis');
 	}
 
-		$who = 'D';
+		$who = $args['who'];
+		if(!in_array(strtoupper($who), array('A','B','C','D'))){
+			$who = 'A';
+		}
 		$list = $redis->keys('ex_post:postid:'.$who.':*');
 		$raw_msg = array();
 		foreach ($list as $key => $value) {
