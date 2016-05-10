@@ -72,11 +72,11 @@ $app->get('/', function ($request, $response, $args) {
 $app->post('/record',function($request, $response, $args){
 	$data = $request->getParsedBody();
 	$msg = $data['msg'];
+	$prefix_key = $data['form'];
 	if( empty($data['msg']) || $msg == 'Array'){
 		die('数据格式有误');
 	}
 	$uri = $request->getUri();
-	$prefix_key = $uri->getHost();
 	$prefix_pool = array('trace.qbgoo.com'=>'A','user.cengfan7.com'=>'B');
 
 
