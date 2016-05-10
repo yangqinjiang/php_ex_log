@@ -77,7 +77,7 @@ $app->post('/record',function($request, $response, $args){
 		die('数据格式有误');
 	}
 	$uri = $request->getUri();
-	$prefix_pool = array('trace.qbgoo.com'=>'A','user.cengfan7.com'=>'B');
+	$prefix_pool = array('trace.qbgoo.com'=>'A','user.cengfan7.com'=>'B','lc.cengfan7.com'=>'C');
 
 
 	$this->tracer->record(array('msg'=>$msg),empty($prefix_pool[$prefix_key]) ? '' : $prefix_pool[$prefix_key]);
