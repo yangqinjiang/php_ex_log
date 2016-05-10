@@ -38,7 +38,11 @@ $app->get('/{who}', function ($request, $response, $args) {
 		$list_count = count($list);
 		$raw_msg = array();
 		for ($i=0; $i <$list_count ; $i++) { 
-			$raw_msg[] = $redis->hmget($list[$i],array('msg'));
+			$rr = $redis->hmget('ex_post:postid:'.$who.':'.$i,array('msg'));
+			if(empty($rr)){
+				continue;
+			}
+			$raw_msg[] = $rr;
 		}
 		// foreach ($list as $key => $value) {
 		// 	$raw_msg[] = $redis->hmget($value,array('msg'));
