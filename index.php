@@ -35,16 +35,16 @@ $app->get('/{who}', function ($request, $response, $args) {
 			$who = 'A';
 		}
 		$list = $redis->keys('ex_post:postid:'.$who.':*');
-		print_r($list);
-		$list_count = count($list);
+
 		$raw_msg = array();
-		for ($i=1; $i <=$list_count+1 ; $i++) { 
-			$rr = $redis->hmget('ex_post:postid:'.$who.':'.$i,array('msg'));
+		foreach ($list as $value) {
+			$rr = $redis->hmget($value,array('msg'));
 			if(empty($rr['msg'])){
 				continue;
 			}
-			$raw_msg[] = $rr;
+			$raw_msg[] = array($rr,$value);
 		}
+print_r($raw_msg);exit;
 	include 'tpl.php';    
     return $response;
 });
