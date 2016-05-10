@@ -16,7 +16,7 @@
  <ul>
  	<?php 
  		foreach ($raw_msg as $v) {
- 			echo "<li>{$v['msg']}</li>";
+ 			echo "<li>{$v['msg']} <a title='已解决' href='/kill/".$who."'>x</a></li>";
  		}
 
  	 ?>
