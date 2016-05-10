@@ -16,32 +16,7 @@ if($_SERVER['SERVER_ADDR'] == '127.0.0.1'){
 
 $app = new Slim\App(["settings" => $config]);
 require_once 'container.config.php';
-// function exception_handler($exception) {
-//   echo "Uncaught exception: " , $exception->getMessage(), "\n";
-// }
 
-// set_exception_handler('exception_handler');
-
-//中间件 http://www.slimframework.com/docs/concepts/middleware.html
-// $app->add(function ($request, $response, $next) {
-//     $auth_info = require_once 'auth.config.php';
-//     //注册  调用商
-//     if(isset($_GET['from']) && isset($_GET['token'])){
-//         $remote_from = $_GET['from'];
-//         $remote_token = $_GET['token'];
-//         //检测 请求来源与请求token的有效性
-//         if(isset($auth_info[$remote_from]) 
-//             && $auth_info[$remote_from] == $remote_token ){
-            
-//             $response = $next($request, $response);
-//             return $response;
-//         }
-        
-//     }
-
-//    exit('Access Denied! Illegal token.');
-   
-// });
 $app->get('/', function ($request, $response, $args) {
 	try {
 		$redis = new Redis();
@@ -52,6 +27,9 @@ $app->get('/', function ($request, $response, $args) {
 		die('连不上Redis');
 	}
 
+		$who = 'D';
+		$list = $redis->keys('ex_post:postid:'.$who.':* ');
+		print_r($list);exit;
 
 
 	   //列出数据
@@ -65,7 +43,7 @@ $app->get('/', function ($request, $response, $args) {
 	   	echo $r['msg'];
 	   	echo "</pre>";
 	   }
-    $response->write("User Server");
+	include 'tpl.php';    
     return $response;
 });
 
