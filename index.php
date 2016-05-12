@@ -59,7 +59,7 @@ $app->post('/record',function($request, $response, $args){
 	$msg = $data['msg'];
 	$prefix_key = $data['form'];
 	if( empty($data['msg']) || $msg == 'Array'){
-		die('数据格式有误');
+		return;
 	}
 	$uri = $request->getUri();
 	$prefix_pool = $this->trace_pool;
