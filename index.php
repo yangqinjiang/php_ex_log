@@ -34,16 +34,26 @@ $app->get('/{who}', function ($request, $response, $args) {
 		if(!in_array(strtoupper($who), array_values($prefix_pool))){
 			$who = 'A';
 		}
-		$list = $redis->keys('ex_post:postid:'.$who.':*');
+		// $list = $redis->keys('ex_post:postid:'.$who.':*');
 
-		$raw_msg = array();
-		foreach ($list as $value) {
-			$rr = $redis->hmget($value,array('msg'));
-			if(empty($rr['msg'])){
-				continue;
-			}
-			$raw_msg[$value] = $rr;
-		}
+		// $raw_msg = array();
+		// foreach ($list as $value) {
+
+		// 	$rr = $redis->hmget($value,array('msg'));
+		// 	if(empty($rr['msg'])){
+		// 		continue;
+		// 	}
+		// 	$raw_msg[$value] = $rr;
+		// }
+
+		$r = $redis->sort('ex_post:'.$who,array(
+				'by'=>'ex_post:postid:'.$who.':*->time',
+				'SORT'=>'DESC',
+				'get'=>array(
+						'ex_post:postid:'.$who.':*->msg'
+					)
+			));
+		var_dump($r);
 	include 'tpl.php';    
     return $response;
 });
