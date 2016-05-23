@@ -53,8 +53,8 @@ $app->get('/{who}', function ($request, $response, $args) {
 						'ex_post:postid:'.$who.':*->msg'
 					)
 			));
-		
-		var_dump($raw_msg);exit;
+
+		var_dump($raw_msg);
 		// exti;
 	include 'tpl.php';    
     return $response;
