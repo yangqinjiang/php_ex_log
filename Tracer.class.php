@@ -30,7 +30,7 @@ class Tracer
         $data['msg'] = json_encode($data['msg']);
         $this->redis->hMset('ex_post:postid:'.$prefix.':'.$ex_postid,$data);
         //时间集合
-        $this->redis->zAdd('ex_post:'.$prefix,time(),'EX'.$ex_postid);
+        $this->redis->zAdd('ex_post:'.$prefix,time(),$ex_postid);
     }
     public function kill($who,$key)
     {
