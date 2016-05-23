@@ -48,7 +48,7 @@ $app->get('/{who}', function ($request, $response, $args) {
 
 		$r = $redis->sort('ex_post:'.$who,array(
 				'by'=>'ex_post:postid:'.$who.':*->time',
-				'SORT'=>'DESC',
+				// 'SORT'=>'DESC',
 				'get'=>array(
 						'ex_post:postid:'.$who.':*->msg'
 					)
