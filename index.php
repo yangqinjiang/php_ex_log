@@ -55,7 +55,7 @@ $app->get('/{who}', function ($request, $response, $args) {
 			));
 
 
-		var_dump($raw_msg);
+		// var_dump($raw_msg);
 		// exti;
 	include 'tpl.php';    
     return $response;
