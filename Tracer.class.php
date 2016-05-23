@@ -31,7 +31,9 @@ class Tracer
     }
     public function kill($who,$key)
     {
-        $this->redis->del($key);
+        $this->redis->zDelete('ex_post:'.$who,$key);
+        $k = 'ex_post:postid:'.$who.':'.$key;
+        $this->redis->del($k);
     }
     public function __destruct()
     {
