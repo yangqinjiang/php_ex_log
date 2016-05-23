@@ -26,11 +26,11 @@ class Tracer
         
         $ex_postid = $this->redis->incr('global:ex_postid:'.$prefix);
         $data['time']=time();//记录时间
-        $data['msg'] = array('id'=>$ex_postid,'msg'=>$data['msg']);
+        $data['msg'] = array('id'=>'EX'.$ex_postid,'msg'=>$data['msg']);
         $data['msg'] = json_encode($data['msg']);
         $this->redis->hMset('ex_post:postid:'.$prefix.':'.$ex_postid,$data);
         //时间集合
-        $this->redis->zAdd('ex_post:'.$prefix,time(),$ex_postid);
+        $this->redis->zAdd('ex_post:'.$prefix,time(),'EX'.$ex_postid);
     }
     public function kill($who,$key)
     {
