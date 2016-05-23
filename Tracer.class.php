@@ -23,15 +23,17 @@ class Tracer
         if($this->ping()){
             return;
         }
-        $data['time']=time();//记录时间
+        
         $ex_postid = $this->redis->incr('global:ex_postid:'.$prefix);
+        $data['time']=time();//记录时间
+        $data['msg'] = array('id'=>$ex_postid,'msg'=>$data['msg']);
         $this->redis->hMset('ex_post:postid:'.$prefix.':'.$ex_postid,$data);
         //时间集合
         $this->redis->zAdd('ex_post:'.$prefix,time(),'EX'.$ex_postid);
     }
     public function kill($who,$key)
     {
-        $this->redis->zDelete('ex_post:'.$who,'EX'.$key);
+        $this->redis->zRem('ex_post:'.$who,'EX'.$key);
         $k = 'ex_post:postid:'.$who.':'.$key;
         $this->redis->del($k);
     }

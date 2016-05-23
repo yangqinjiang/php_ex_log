@@ -46,15 +46,15 @@ $app->get('/{who}', function ($request, $response, $args) {
 		// 	$raw_msg[$value] = $rr;
 		// }
 
-		$r = $redis->sort('ex_post:'.$who,array(
+		$raw_msg = $redis->sort('ex_post:'.$who,array(
 				'by'=>'ex_post:postid:'.$who.':*->time',
 				'SORT'=>'DESC',
 				'get'=>array(
 						'ex_post:postid:'.$who.':*->msg'
 					)
 			));
-		$raw_msg = $r;
-		// var_dump($r);
+		
+		var_dump($raw_msg);exit;
 		// exti;
 	include 'tpl.php';    
     return $response;
@@ -62,7 +62,7 @@ $app->get('/{who}', function ($request, $response, $args) {
 $app->get('/kill/{who}/{key}',function ($request, $response, $args){
 	$who = $args['who'];
 	$key = $args['key'];
-	
+
 	$this->tracer->kill($who,$key);
 	header('location: /'.$who);exit;
 
