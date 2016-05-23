@@ -16,8 +16,9 @@
  <ul>
  	<?php 
  		foreach ($raw_msg as $k => $v) {
- 			$item = json_decode($v);
- 			echo "<li><a title='已解决' href='/kill/".$who."/".$item->id."'>x</a><pre>{$v->msg} </pre></li>";
+ 			$item = (array)json_decode($v);
+ 			var_dump($item);
+ 			echo "<li><a title='已解决' href='/kill/".$who."/".$item['id']."'>x</a><pre>{$v['msg']} </pre></li>";
  		}
 
  	 ?>
