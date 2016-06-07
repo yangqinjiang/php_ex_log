@@ -103,7 +103,7 @@ $app->get('/worktile/authorize',function ($request, $response, $args)
     $ret = curl_exec($ch);
     curl_close($ch);
     var_dump($ret);
-    header('location: '.$ret);
+    echo '<a href="'.$ret.'">点击</a>';
 });
 //2,获取access_token  https://api.worktile.com/oauth2/access_token
 $app->get('/worktile/response',function ($request, $response, $args)
