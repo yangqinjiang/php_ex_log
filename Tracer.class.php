@@ -47,7 +47,7 @@ class Tracer
     {
         $k = 'ex_post:postid:'.$who.':'.$key;
         //hash set
-        $raw_data = $this->redis->hMGet($k);
+        $raw_data = $this->redis->hMGet($k,['msg','time']);
         var_dump($raw_data);
         $data = (array)json_decode($raw_data);
         var_dump($data);
