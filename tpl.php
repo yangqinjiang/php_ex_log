@@ -4,9 +4,12 @@
 	<title>异常错误显示</title>
 	<meta http-equiv="refresh" content="60" />
 	<style type="text/css">
+	ul li{
+		padding: 10px;
+	}
 		ul li:hover{
 			background-color: beige;
-			padding: 10px;
+			
 		}
 	</style>
 </head>
