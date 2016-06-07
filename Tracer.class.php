@@ -45,15 +45,14 @@ class Tracer
     //设置标志位
     public function archive($who,$key)
     {
-        // $this->redis->zRem('ex_post:'.$who,$key);
         $k = 'ex_post:postid:'.$who.':'.$key;
-        // $this->redis->del($k);
         //hash set
         $raw_data = $this->redis->hMGet($k);
+        var_dump($raw_data);
         $data = (array)json_decode($raw_data);
         var_dump($data);
         $data['archive'] = 1;//修改
-
+        $this->redis->del($k);
         $r = $this->redis->hMset($k,$data);//保存
         var_dump($r);
     }
