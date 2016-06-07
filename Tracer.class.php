@@ -47,10 +47,11 @@ class Tracer
     {
         $k = 'ex_post:postid:'.$who.':'.$key;
         //hash set
-        $raw_data = $this->redis->hMGet($k,['msg','time']);
+        $raw_data = $this->redis->hMGet($k,['msg']);
         var_dump($raw_data['msg']);
         $data = (array)json_decode($raw_data['msg']);
-        $data['msg']['archive'] = 1;//修改
+        var_dump($data);
+        $data['archive'] = 1;//修改
         var_dump($data);
         return;
         $this->redis->del($k);
