@@ -49,6 +49,8 @@ class Tracer
         var_dump($key);
         var_dump($this->redis->sAdd('ok_post:'.$who,$key));
         var_dump($this->redis->sCard('ok_post:'.$who));
+        $r = $this->redis->sIsMember('ok_post:'.$who,$key);
+        var_dump($r);
         
     }
     public function sendMsg($msg)
