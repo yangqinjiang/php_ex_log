@@ -47,7 +47,7 @@ class Tracer
     {
         var_dump($who);
         var_dump($key);
-        var_dump($this->redis->zAdd('ok_post:'.$who,,$key,$key));
+        var_dump($this->redis->zAdd('ok_post:'.$who,$key,$key));
         var_dump($this->redis->zCard('ok_post:'.$who));
         
     }
