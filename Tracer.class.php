@@ -48,12 +48,12 @@ class Tracer
         $k = 'ex_post:postid:'.$who.':'.$key;
         //hash set
         $raw_data = $this->redis->hMGet($k,['msg','time']);
-       
-        $raw_data['archive'] = 1;//修改
+        var_dump($raw_data['msg']);
+        $raw_data['msg']['archive'] = 1;//修改
         $this->redis->del($k);
         $r = $this->redis->hMset($k,$raw_data);//保存
         var_dump($r);
-         var_dump($this->redis->hMGet($k,['msg','time','archive']));
+         var_dump($this->redis->hMGet($k,['msg']));
         
     }
     public function sendMsg($msg)
