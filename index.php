@@ -21,7 +21,13 @@ $app->get('/', function ($request, $response, $args) {
 	header('location: /A');exit;
 });
 $app->get('/{who}', function ($request, $response, $args) {
-	try {
+	
+	$who = $args['who'];
+	include 'tpl.php'; 
+    return $response;
+});
+$app->get('/list/{who}',function($request,$response,$args){
+		try {
 		$redis = new Redis();
 	   $redis->connect('127.0.0.1');
 	   $redis->select(1);
@@ -34,17 +40,6 @@ $app->get('/{who}', function ($request, $response, $args) {
 		if(!in_array(strtoupper($who), array_values($prefix_pool))){
 			$who = 'A';
 		}
-		// $list = $redis->keys('ex_post:postid:'.$who.':*');
-
-		// $raw_msg = array();
-		// foreach ($list as $value) {
-
-		// 	$rr = $redis->hmget($value,array('msg'));
-		// 	if(empty($rr['msg'])){
-		// 		continue;
-		// 	}
-		// 	$raw_msg[$value] = $rr;
-		// }
 
 		$raw_msg = $redis->sort('ex_post:'.$who,array(
 				'by'=>'ex_post:postid:'.$who.':*->time',
@@ -53,17 +48,17 @@ $app->get('/{who}', function ($request, $response, $args) {
 						'ex_post:postid:'.$who.':*->msg'
 					)
 			));
-
-		
-		if(!empty($_GET['debug'])){
-			echo "<pre>";
-			var_dump($raw_msg);
-			echo "</pre>";
-			exit;
+		foreach ($raw_msg as $key => $value) {
+			$item = (array)json_decode($value);
+			$exist = $redis->sIsMember('ok_post:'.$who,$item['id']);
+			if($exist){
+				unset($raw_msg[$key]);
+				continue;
+			}
+			$raw_msg[$key] = $item;
 		}
-		// exti;
-	include 'tpl.php';    
-    return $response;
+
+		$response->withJson(['prefix_pool'=>$prefix_pool,'list'=>$raw_msg]);
 });
 $app->get('/kill/{who}/{key}',function ($request, $response, $args){
 	$who = $args['who'];
