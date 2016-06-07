@@ -49,7 +49,7 @@ class Tracer
         //hash set
         $raw_data = $this->redis->hMGet($k,['msg','time']);
         var_dump($raw_data['msg']);
-        $data = json_decode($raw_data['msg']);
+        $data = (array)json_decode($raw_data['msg']);
         $data['archive'] = 1;//修改
         var_dump($data);
         return;
