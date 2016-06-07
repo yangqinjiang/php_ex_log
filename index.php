@@ -89,7 +89,7 @@ $app->post('/record',function($request, $response, $args){
 //1,请求授权 https://open.worktile.com/oauth2/authorize
 $app->get('/worktile/authorize',function ($request, $response, $args)
 {
-	$url = 'https://open.worktile.com/oauth2/authorize?client_id=2b4ddbd6f526434285f62b0006cebc0f&redirect_uri=http://trace.qbgoo.com/test.php';
+	$url = 'https://open.worktile.com/oauth2/authorize?client_id=2b4ddbd6f526434285f62b0006cebc0f&redirect_uri=http://trace.qbgoo.com/worktile/response';
 	$ch = curl_init();
         $this_header = array(
             "charset=UTF-8"
