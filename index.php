@@ -112,6 +112,7 @@ $app->get('/worktile/response',function ($request, $response, $args)
 		exit('error call me.');
 	}
 	$code = $_GET['code'];
+	var_dump($code);
 	$url = 'https://api.worktile.com/oauth2/access_token?client_id=2b4ddbd6f526434285f62b0006cebc0f&&client_secret=3d6b481a3dc04bf183651e062cbfc0e6&code='.$code;
 	$ch = curl_init();
         $this_header = array(
