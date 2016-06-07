@@ -54,7 +54,7 @@ $app->get('/{who}', function ($request, $response, $args) {
 					)
 			));
 
-
+		
 		if(!empty($_GET['debug'])){
 			echo "<pre>";
 			var_dump($raw_msg);
