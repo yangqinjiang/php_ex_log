@@ -3,6 +3,11 @@
 <head>
 	<title>异常错误显示</title>
 	<meta http-equiv="refresh" content="30" />
+	<style type="text/css">
+		ul li:hover{
+			background-color: beige;
+		}
+	</style>
 </head>
 <body>
 <?php 
