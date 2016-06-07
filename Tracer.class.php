@@ -54,7 +54,7 @@ class Tracer
         var_dump($data);
         $data['archive'] = 1;//修改
 
-        $r = $this->redis->hMSet($k,$data);//保存
+        $r = $this->redis->hMset($k,$data);//保存
         var_dump($r);
     }
     public function sendMsg($msg)
