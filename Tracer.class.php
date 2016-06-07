@@ -45,7 +45,7 @@ class Tracer
     //设置标志位
     public function archive($who,$key)
     {
-        var_dump($this->redis->sAdd('ok_post:'.$who,$key.''));
+        var_dump($this->redis->sAdd('ok_post:'.$who,'ehllo'));
         var_dump($this->redis->sMembers('ok_post:'.$who));
         
     }
