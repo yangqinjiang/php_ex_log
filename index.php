@@ -51,11 +51,12 @@ $app->get('/{who}', function ($request, $response, $args) {
 				'SORT'=>'DESC',
 				'get'=>array(
 						'ex_post:postid:'.$who.':*->msg'
+						'ex_post:postid:'.$who.':*->archive'
 					)
 			));
 
 
-		// var_dump($raw_msg);
+		var_dump($raw_msg);
 		// exti;
 	include 'tpl.php';    
     return $response;
@@ -68,6 +69,15 @@ $app->get('/kill/{who}/{key}',function ($request, $response, $args){
 	header('location: /'.$who);exit;
 
 });
+$app->get('/archive/{who}/{key}',function ($request, $response, $args){
+	$who = $args['who'];
+	$key = $args['key'];
+
+	$this->tracer->archive($who,$key);
+	header('location: /'.$who);exit;
+
+});
+
 $app->post('/record',function($request, $response, $args){
 	$data = $request->getParsedBody();
 	$msg = $data['msg'];
