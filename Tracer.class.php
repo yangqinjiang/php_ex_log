@@ -45,19 +45,8 @@ class Tracer
     //设置标志位
     public function archive($who,$key)
     {
-        $k = 'ex_post:postid:'.$who.':'.$key;
-        //hash set
-        $raw_data = $this->redis->hMGet($k,['msg']);
-        var_dump($raw_data['msg']);
-        $data = (array)json_decode($raw_data['msg']);
-        var_dump($data);
-        $data['archive'] = 1;//修改
-        var_dump($data);
-        // return;
-        // $this->redis->del($k);
-        $r = $this->redis->hMset($k,$data);//保存
-        var_dump($r);
-         var_dump($this->redis->hMGet($k,['msg','archive']));
+        $this->redis->zAdd('ok_post:'.$who,$key);
+        var_dump($this->redis->zRange('ok_post:'.$who,0,-1));
         
     }
     public function sendMsg($msg)
