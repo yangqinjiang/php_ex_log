@@ -49,7 +49,11 @@ class Tracer
         // $k = 'ex_post:postid:'.$who.':'.$key;
         // $this->redis->del($k);
         //hash set
-        $this->redis->hMSet($k,['archive'=>1]);
+        $raw_data = $this->redis->hMGet($k);
+        $data = (array)json_decode($raw_data);
+        $data['archive'] = 1;//修改
+
+        $this->redis->hMSet($k,$data);//保存
     }
     public function sendMsg($msg)
     {
