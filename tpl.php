@@ -13,7 +13,27 @@
 	}
 		ul li:hover{
 			background-color: beige;
-			
+		}
+		ul li a{
+			cursor: pointer;
+			font-size: 20px;
+		}
+		ul li pre{
+			font-size: 24px;
+		}
+		#prefix_bar{
+			    text-align: center;
+		}
+		#prefix_bar a{
+
+			display: inline-block;
+			padding: 10px;
+			border:1px solid red;
+			text-decoration: none;
+		}
+		.current{
+			    color: white;
+    			background-color: red;
 		}
 	</style>
 </head>
@@ -24,14 +44,14 @@
 </div>
 <script type="text/html" id="prefix">
 	{{each prefix_pool as value i}}
-		<a href="/{{value}}">{{i}}</a>
+		<a id="{{value}}" href="/{{value}}">{{i}}</a>
 	{{/each}}
 </script>
 <script type="text/html" id="list">
 	{{each list as value}}
-		<li><a title='删除它'  _href='/kill/<?php echo $who; ?>/{{value.id}}'>x</a>
+		<li><a class="a"  title='删除它' _href='http://trace.qbgoo.com/kill/<?php echo $who; ?>/{{value.id}}'>x</a>
 		&nbsp;&nbsp;&nbsp;
-		<a title='归档' _href='/archive/<?php echo $who; ?>/{{value.id}}'>Archive</a>
+		<a  class="a"  title='归档' _href='http://trace.qbgoo.com/archive/<?php echo $who; ?>/{{value.id}}'>Archive</a>
 		<pre>{{value.msg}}</pre></li>
 		{{/each}}
 </script>
@@ -43,20 +63,32 @@
 
 
  	$.get('/list/<?php echo $who; ?>',function (data) {
- 		console.log(data);
+ 		// console.log(data);
  		var html = template('prefix',data);
- 		console.log(html);
+ 		// console.log(html);
  		document.getElementById('prefix_bar').innerHTML = html;
 
  		html = template('list',data);
- 		console.log(html);
+ 		// console.log(html);
  		document.getElementById('list_ul').innerHTML = html;
+	 	$('#list_ul a').bind('click',function (d) {
+	 		
+	 		var href = $(this).attr('_href');
+	 		$(this).parent().hide();
+	 		console.log(href);
+	 		var _this = $(this);
+	 		$.get(href,function (d) {
+	 		});
+	 	});
+
+	 	//渲染tab页面
+	 	var who = '<?php echo $who; ?>';
+	 	$('#'+who).addClass('current');
 
  	},'json');
 
- 	$('#list_ul li a').one('click',function () {
- 		console.log('我只执行一次');
- 	})
+
+
  </script>
 </body>
 </html>
