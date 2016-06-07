@@ -45,7 +45,7 @@ class Tracer
     //设置标志位
     public function archive($who,$key)
     {
-        $this->redis->zAdd('ok_post:'.$who,$key);
+        $this->redis->zAdd('ok_post:'.$who,time(),$key);
         var_dump($this->redis->zRange('ok_post:'.$who,0,-1));
         
     }
