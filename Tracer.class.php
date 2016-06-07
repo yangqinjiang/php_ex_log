@@ -51,9 +51,11 @@ class Tracer
         //hash set
         $raw_data = $this->redis->hMGet($k);
         $data = (array)json_decode($raw_data);
+        var_dump($data);
         $data['archive'] = 1;//修改
 
-        $this->redis->hMSet($k,$data);//保存
+        $r = $this->redis->hMSet($k,$data);//保存
+        var_dump($r);
     }
     public function sendMsg($msg)
     {

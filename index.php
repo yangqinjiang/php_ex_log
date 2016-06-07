@@ -78,7 +78,8 @@ $app->get('/archive/{who}/{key}',function ($request, $response, $args){
 	$key = $args['key'];
 
 	$this->tracer->archive($who,$key);
-	header('location: /'.$who);exit;
+	// header('location: /'.$who);exit;
+	exit;
 
 });
 
