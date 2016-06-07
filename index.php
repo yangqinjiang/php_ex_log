@@ -51,7 +51,7 @@ $app->get('/{who}', function ($request, $response, $args) {
 				'SORT'=>'DESC',
 				'get'=>array(
 						'ex_post:postid:'.$who.':*->msg'
-						'ex_post:postid:'.$who.':*->archive'
+						// 'ex_post:postid:'.$who.':*->archive'
 					)
 			));
 
