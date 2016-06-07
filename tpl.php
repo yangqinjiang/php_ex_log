@@ -26,7 +26,7 @@
  	<?php 
  		foreach ($raw_msg as $k => $v) {
  			$item = (array)json_decode($v);
- 			if(isset($item['archive']) && $item['archive'] == '1')continue;
+ 			// if(isset($item['archive']) && $item['archive'] == '1')continue;
  			// var_dump($item);
  			echo "<li><a title='删除它' href='/kill/".$who."/".$item['id']."'>x</a>&nbsp;&nbsp;&nbsp;<a title='归档' href='/archive/".$who."/".$item['id']."'>Archive</a><pre>{$item['msg']}--{$item['archive']}</pre></li>";
  		}

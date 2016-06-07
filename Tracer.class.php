@@ -57,7 +57,7 @@ class Tracer
         // $this->redis->del($k);
         $r = $this->redis->hMset($k,$data);//保存
         var_dump($r);
-         var_dump($this->redis->hMGet($k,['msg']));
+         var_dump($this->redis->hMGet($k,['msg','archive']));
         
     }
     public function sendMsg($msg)
