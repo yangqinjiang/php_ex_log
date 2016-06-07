@@ -56,7 +56,12 @@ $app->get('/{who}', function ($request, $response, $args) {
 			));
 
 
-		if($_GET['debug'])var_dump($raw_msg);
+		if($_GET['debug']){
+			echo "<pre>";
+			var_dump($raw_msg);
+			echo "</pre>";
+			exit;
+		}
 		// exti;
 	include 'tpl.php';    
     return $response;
