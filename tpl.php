@@ -2,10 +2,11 @@
 <html>
 <head>
 	<title>异常错误显示</title>
-	<meta http-equiv="refresh" content="30" />
+	<meta http-equiv="refresh" content="60" />
 	<style type="text/css">
 		ul li:hover{
 			background-color: beige;
+			padding: 10px;
 		}
 	</style>
 </head>
