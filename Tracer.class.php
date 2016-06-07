@@ -46,7 +46,7 @@ class Tracer
     public function archive($who,$key)
     {
         // $this->redis->zRem('ex_post:'.$who,$key);
-        // $k = 'ex_post:postid:'.$who.':'.$key;
+        $k = 'ex_post:postid:'.$who.':'.$key;
         // $this->redis->del($k);
         //hash set
         $raw_data = $this->redis->hMGet($k);
