@@ -39,9 +39,20 @@
 </head>
 <body>
 
+<?php
+	if(!empty($_SESSION['worktile_login'])){
+		var_dump($_SESSION['worktile_login']);
+		echo 'worktile用户:'.$_SESSION['worktile_login']['name'].'-'.$_SESSION['worktile_login']['display_name'].'--><a href="/worktile/logout">退出</a>';
+	}else{
+		echo '<span id="wa"></span>';
+	}
+
+?>
+&nbsp;&nbsp;&nbsp;<a target="_blank" href="/worktile/setting">设置</a>
 <div id="prefix_bar">
-	
+
 </div>
+
 <script type="text/html" id="prefix">
 	{{each prefix_pool as value i}}
 		<a id="{{value}}" href="/{{value}}">{{i}}</a>
@@ -52,6 +63,8 @@
 		<li><a class="a"  title='删除它' _href='http://trace.qbgoo.com/kill/<?php echo $who; ?>/{{value.id}}'>x</a>
 		&nbsp;&nbsp;&nbsp;
 		<a  class="a"  title='归档' _href='http://trace.qbgoo.com/archive/<?php echo $who; ?>/{{value.id}}'>Archive</a>
+			&nbsp;&nbsp;&nbsp;
+			<a title='创建worktile任务' _href='http://trace.qbgoo.com/worktile/task/<?php echo $who; ?>/{{value.id}}'>Task</a>
 		<pre>{{value.msg}}</pre></li>
 		{{/each}}
 </script>
@@ -71,7 +84,8 @@
  		html = template('list',data);
  		// console.log(html);
  		document.getElementById('list_ul').innerHTML = html;
-	 	$('#list_ul a').bind('click',function (d) {
+		//
+	 	$('#list_ul a.a').bind('click',function (d) {
 	 		
 	 		var href = $(this).attr('_href');
 	 		$(this).parent().hide();
@@ -88,6 +102,10 @@
  	},'json');
 
 
+	 $.get('/worktile/authorize',function (d) {
+		 console.log(d);
+		 $('#wa').html(d);
+	 });
 
  </script>
 </body>
