@@ -141,7 +141,7 @@ $app->get('/worktile/response',function ($request, $response, $args)
     $ret = curl_exec($ch);
     curl_close($ch);
 
-	file_put_contents('temp/access_token.json',$ret);
+	file_put_contents(__DIR__.'/temp/access_token.json',$ret);
 	$ret = json_decode($ret,true);
 	var_dump($ret);
 
