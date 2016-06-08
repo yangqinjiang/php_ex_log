@@ -91,6 +91,6 @@ $container['saveAccessToken'] = function($c){
             $ret = json_encode($ret);
         }
         file_put_contents(__DIR__.'/temp/worktile_access_token.json',$ret);
-//        var_dump('hello');
+
     };
 };

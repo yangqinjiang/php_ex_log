@@ -25,6 +25,8 @@ $app->get('/', function ($request, $response, $args) {
 $app->get('/{who}', function ($request, $response, $args) {
 	
 	$who = $args['who'];
+	$pid = $_SESSION['worktile_login']['__pid'];
+	$eid = $_SESSION['worktile_login']['__eid'];
 	include 'tpl.php'; 
     return $response;
 });
@@ -95,10 +97,12 @@ $app->post('/record',function($request, $response, $args){
 	$response->withJson(array('code'=>200,'msg'=>$msg));
 	return $response;
 });
-
+$app->get('/detail/{who}/{key}',function ($request, $response, $args)
+{
+	var_dump('显示更多内容,未实现');
+});
 //-----------------------------------------------------------
 $app->get('/worktile/setting',function(){
-//	var_dump($_SERVER);
 	if(empty($_SESSION['worktile_login'])){
 		die('请先登录Worktile授权');
 	}
@@ -107,12 +111,12 @@ $app->get('/worktile/setting',function(){
 });
 $app->get('/worktile/setprojects',function(){
 	$_SESSION['worktile_login']['__pid'] = $_GET['p'];
-//	$_SESSION['worktile_login']['__pname'] = $_GET['pname'];
+	$_SESSION['worktile_login']['__pname'] = $_GET['name'];
 	echo '/worktile/entries/'.$_GET['p'];exit;
 });
 $app->get('/worktile/setentries',function(){
 	$_SESSION['worktile_login']['__eid'] = $_GET['e'];
-//	$_SESSION['worktile_login']['__ename'] = $_GET['ename'];
+	$_SESSION['worktile_login']['__ename'] = $_GET['name'];
 	echo '/worktile/entries/'.$_GET['e'];exit;
 });
 //1,请求授权 https://open.worktile.com/oauth2/authorize
@@ -237,8 +241,22 @@ $app->get('/worktile/entries/{pid}',function ($request, $response, $args)
 });
 
 //创建任务
-$app->get('/worktile/task/{pid}/{entry_id}',function ($request, $response, $args)
+$app->get('/worktile/task/{pid}/{entry_id}/{who}/{key}',function ($request, $response, $args)
 {
+	$who = $args['who'];
+	$key = $args['key'];
+	$msg = $who.'-'.$key;
+	try {
+		$redis = new Redis();
+	   $redis->connect('127.0.0.1');
+	   $redis->select(1);
+	} catch (Exception $e) {
+		echo $e->getMessage();
+		die('连不上Redis');
+	}
+	$msg = $redis->hMGet('ex_post:postid:'.$who.':'.$key,['msg']);
+	$msg = (array)json_decode($msg['msg']);
+	$msg = 'TRACE::'.$msg['msg'].'::请找出此bug的原因,并解决它.http://trace.qbgoo.com/detail/'.$who.'/'.$key;
 	$access_token = $this->worktile_access_token;
 //curl -d 'name=还信用卡&entry_id=xxxx&desc=10月12号还信用卡' 'https://api.worktile.com/v1/task?pid=xxx&access_token=xxx'
 	$url = 'https://api.worktile.com/v1/task?pid='.$args['pid'];
@@ -251,12 +269,16 @@ $app->get('/worktile/task/{pid}/{entry_id}',function ($request, $response, $args
 	curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
 	curl_setopt($ch, CURLOPT_URL, $url);
 	curl_setopt($ch, CURLOPT_POST, TRUE);
-	$post = ['name'=>'OpenApi测试'.date('Y-m-d H:i:s',time()),'entry_id'=>$args['entry_id'],'desc'=>'测试任务的描述'];
+	$post = ['name'=>'来自[异常捕获系统]的任务'.date('Y-m-d H:i:s',time()),'entry_id'=>$args['entry_id'],'desc'=>$msg];
 	$post_str = json_encode($post);
 	curl_setopt($ch, CURLOPT_POSTFIELDS, $post_str);
 	$ret = curl_exec($ch);
 	curl_close($ch);
-	echo $ret;exit;
+	echo $ret;
+	//存档
+        var_dump($redis->sAdd('ok_post:'.$who,$key));
+        var_dump($redis->sCard('ok_post:'.$who));
+	exit;
 });
 
 //刷新token

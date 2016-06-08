@@ -49,12 +49,12 @@ if(!empty($_SESSION['worktile_login'])){
 ?>
 <script type="text/html" id="projects">
     {{each list as i}}
-    <a style="cursor: pointer;" _href="/worktile/setprojects?p={{i.pid}}" title="选择默认项目名" name="{{i.name}}">{{i.name}}</a>
+    <a style="cursor: pointer;" _href="/worktile/setprojects?p={{i.pid}}&name={{i.name}}" title="选择默认项目名" name="{{i.name}}">{{i.name}}</a>
     {{/each}}
 </script>
 <script type="text/html" id="entries">
     {{each list as i}}
-    <a _href="/worktile/setentries?e={{i.entry_id}}" title="选择任务组名" name="{{i.name}}">{{i.name}}</a>
+    <a _href="/worktile/setentries?e={{i.entry_id}}&name={{i.name}}" title="选择任务组名" name="{{i.name}}">{{i.name}}</a>
     {{/each}}
 </script>
 

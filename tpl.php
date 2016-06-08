@@ -22,6 +22,7 @@
 			font-size: 24px;
 		}
 		#prefix_bar{
+			margin-top: 10px;
 			    text-align: center;
 		}
 		#prefix_bar a{
@@ -41,8 +42,8 @@
 
 <?php
 	if(!empty($_SESSION['worktile_login'])){
-		var_dump($_SESSION['worktile_login']);
 		echo 'worktile用户:'.$_SESSION['worktile_login']['name'].'-'.$_SESSION['worktile_login']['display_name'].'--><a href="/worktile/logout">退出</a>';
+		echo '&nbsp;&nbsp;&nbsp;'.$_SESSION['worktile_login']['__pname'].'-'.$_SESSION['worktile_login']['__ename'];
 	}else{
 		echo '<span id="wa"></span>';
 	}
@@ -64,7 +65,7 @@
 		&nbsp;&nbsp;&nbsp;
 		<a  class="a"  title='归档' _href='http://trace.qbgoo.com/archive/<?php echo $who; ?>/{{value.id}}'>Archive</a>
 			&nbsp;&nbsp;&nbsp;
-			<a title='创建worktile任务' _href='http://trace.qbgoo.com/worktile/task/<?php echo $who; ?>/{{value.id}}'>Task</a>
+			<a class="a"  title='创建worktile任务' _href='http://trace.qbgoo.com/worktile/task/<?php echo $pid; ?>/<?php echo $eid; ?>/<?php echo $who; ?>/{{value.id}}'>Task</a>
 		<pre>{{value.msg}}</pre></li>
 		{{/each}}
 </script>
