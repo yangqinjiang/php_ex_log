@@ -271,7 +271,7 @@ $app->get('/worktile/task/{pid}/{entry_id}',function ($request, $response, $args
 	curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
 	curl_setopt($ch, CURLOPT_URL, $url);
 	curl_setopt($ch, CURLOPT_POST, TRUE);
-	$post = ['name'=>'测试','entry_id'=>$args['entry_id'],'desc'=>'测试任务的描述'];
+	$post = ['name'=>'OpenApi测试'.date('Y-m-d H:i:s',time()),'entry_id'=>$args['entry_id'],'desc'=>'测试任务的描述'];
 	$post_str = json_encode($post);
 	curl_setopt($ch, CURLOPT_POSTFIELDS, $post_str);
 	$ret = curl_exec($ch);
