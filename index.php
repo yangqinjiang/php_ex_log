@@ -173,7 +173,9 @@ $app->get('/worktile/user/profile',function($request, $response, $args){
 
 	$ret = json_decode($ret,true);
 	echo '人个资料';
+	echo '<pre>';
 	var_dump($ret);
+	echo '</pre>';
 	echo '<a href="/worktile/projects">获取用户所有项目</a>';
 
 });
@@ -196,8 +198,10 @@ $app->get('/worktile/projects',function ($request, $response, $args)
 	curl_close($ch);
 	$ret = json_decode($ret,true);
 	echo '获取用户所有项目';
+	echo '<pre>';
 	var_dump($ret);
-	
+	echo '</pre>';
+
 	echo '<a href="/worktile/project_members">获取项目成员</a>';
 });
 
@@ -221,8 +225,10 @@ $app->get('/worktile/project_members/{pid}',function ($request, $response, $args
 	$status = $response->getStatusCode();
 	$ret = json_decode($ret,true);
 	echo '获取项目成员';
+	echo '<pre>';
 	var_dump($ret);
-	echo '<a href="/worktile/entries">获取项目成员</a>';
+	echo '</pre>';
+	echo '<a href="/worktile/entries">获取项目的任务组列表</a>';
 });
 //获取项目的任务组列表
 $app->get('/worktile/entries/{pid}',function ($request, $response, $args)
@@ -230,7 +236,7 @@ $app->get('/worktile/entries/{pid}',function ($request, $response, $args)
 	$access_token_str = file_get_contents(__DIR__.'/temp/worktile_access_token.json');
 	$access_token = json_decode($access_token_str,true);
 
-	$url = 'https://api.worktile.com/v1/entries?pid'.$args['pid'];
+	$url = 'https://api.worktile.com/v1/entries?pid='.$args['pid'];
 	$ch = curl_init();
 	curl_setopt($ch,CURLOPT_HTTPHEADER,array(
 			'Content-Type: application/json',
@@ -243,7 +249,9 @@ $app->get('/worktile/entries/{pid}',function ($request, $response, $args)
 	curl_close($ch);
 	$ret = json_decode($ret,true);
 	echo '获取项目的任务组列表';
+	echo '<pre>';
 	var_dump($ret);
+	echo '</pre>';
 	echo '<a href="/worktile/task">创建任务</a>';
 });
 
@@ -272,7 +280,9 @@ $app->get('/worktile/task/{pid}/{entry_id}',function ($request, $response, $args
 
 
 	echo '创建任务';
+	echo '<pre>';
 	var_dump($ret);
+	echo '</pre>';
 });
 //-----------------------------------------------------------
 $app->run();
