@@ -296,9 +296,22 @@ $app->get('/worktile/task/{pid}/{entry_id}/{who}/{key}',function ($request, $res
 	$ret = curl_exec($ch);
 	curl_close($ch);
 	echo $ret;
-	//存档
-	$redis->sAdd('ok_post:'.$who,$key);
-	$redis->sCard('ok_post:'.$who);
+	$ret = json_decode($ret,true);
+	if(in_array($ret['error_code'],[100005,100006,600002,600003])){
+		//错误
+
+//		错误码(error_code)	错误信息(error_message)	http状态码(statusCode)
+//		100005	没授权，请授权后再操作	401
+//		100006	access_token不正确	400
+//		600002	任务名称或任务组id为空	400
+//		600003	创建任务失败	500
+		echo json_encode($ret);
+	}else{
+		//存档
+		$redis->sAdd('ok_post:'.$who,$key);
+		$redis->sCard('ok_post:'.$who);
+	}
+
 	exit;
 });
 

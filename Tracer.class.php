@@ -27,7 +27,7 @@ class Tracer
         $ex_postid = $this->redis->incr('global:ex_postid:'.$prefix);
         $data['time']=time();//记录时间
         $msg = $data['msg'];
-        $this->sendMsg($msg);//根据权重发送信息
+       // $this->sendMsg($msg);//根据权重发送信息
         $data['msg'] = array('id'=>$ex_postid,'msg'=>$msg);
         $data['msg'] = json_encode($data['msg']);
         $this->redis->hMset('ex_post:postid:'.$prefix.':'.$ex_postid,$data);
