@@ -141,10 +141,35 @@ $app->get('/worktile/response',function ($request, $response, $args)
     $ret = curl_exec($ch);
     curl_close($ch);
 
-	file_put_contents(__DIR__.'/temp/access_token.json',$ret);
-	$ret = json_decode($ret,true);
-	var_dump($ret);
 
+	$ret_arr = json_decode($ret,true);
+	var_dump($ret_arr);
+	if($ret_arr['error_code'] == '100004' || $ret_arr['error_code'] == '1003' ){
+		die($ret_arr['error_message']);
+	}
+	//保存正确的数据
+	file_put_contents(__DIR__.'/temp/worktile_access_token.json',$ret);
+	header('location: /worktile/user/profile');exit;
+
+});
+$app->get('/worktile/user/profile',function($request, $response, $args){
+	$access_token_str = file_get_contents(__DIR__.'/temp/worktile_access_token.json');
+	$access_token = json_decode($access_token_str,true);
+	var_dump($access_token);
+
+	//
+	$url = 'https://api.worktile.com/v1/user/profile';
+	$ch = curl_init();
+	curl_setopt($ch,CURLOPT_HTTPHEADER,array(
+			'Content-Type: application/json',
+			'access_token: ' . $access_token['access_token'])
+	);
+	curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
+	curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+	curl_setopt($ch, CURLOPT_URL, $url);
+	$ret = curl_exec($ch);
+	curl_close($ch);
+	var_dump($ret);
 });
 //-----------------------------------------------------------
 $app->run();
