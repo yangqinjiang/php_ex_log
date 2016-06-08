@@ -20,7 +20,7 @@ $app = new Slim\App(["settings" => $config]);
 require_once 'container.config.php';
 $app->get('/', function ($request, $response, $args) {
 	// echo "hello world";
-//	throw new Exception('ddd');
+	throw new Exception('ddd');
 	header('location: /A');exit;
 });
 $app->get('/{who}', function ($request, $response, $args) {
