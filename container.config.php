@@ -74,3 +74,23 @@ $container['phpErrorHandler'] = function ($c)
                              ->write('phpErrorHandler went wrong!');
     };
 };
+
+//worktile的access_token
+$container['worktile_access_token'] = function($c){
+    $access_token_str = file_get_contents(ROOT.'/temp/worktile_access_token.json');
+    $access_token = json_decode($access_token_str,true);
+    if(is_array($access_token)){
+        return $access_token;
+    }
+    return $access_token_str;
+};
+
+$container['saveAccessToken'] = function($c){
+    return function($ret){
+        if(is_array($ret)){
+            $ret = json_encode($ret);
+        }
+        file_put_contents(__DIR__.'/temp/worktile_access_token.json',$ret);
+        var_dump('hello');
+    };
+};

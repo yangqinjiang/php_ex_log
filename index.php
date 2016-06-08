@@ -2,6 +2,7 @@
 
 define('U', 'yes,is me.');
 defined('U') or die('Access Denied');
+define('ROOT',__DIR__);
 ini_set('display_errors','1');
 error_reporting(E_ALL);
 require 'vendor/autoload.php';
@@ -100,7 +101,6 @@ $app->post('/record',function($request, $response, $args){
 $app->get('/worktile/authorize',function ($request, $response, $args)
 {
 	$url = 'https://open.worktile.com/oauth2/authorize?client_id=2b4ddbd6f526434285f62b0006cebc0f&redirect_uri=http://trace.qbgoo.com/worktile/response';
-
     echo '<a href="'.$url.'">Worktile授权登录</a>';
 });
 //2,获取access_token  https://api.worktile.com/oauth2/access_token
@@ -110,7 +110,6 @@ $app->get('/worktile/response',function ($request, $response, $args)
 		exit('error call me.');
 	}
 	$code = $_GET['code'];
-	var_dump($code);
 	$url = 'https://api.worktile.com/oauth2/access_token';
 	$ch = curl_init();
     //post data
@@ -131,21 +130,18 @@ $app->get('/worktile/response',function ($request, $response, $args)
 
 
 	$ret_arr = json_decode($ret,true);
-	var_dump($ret_arr);
 	if($ret_arr['error_code'] == '100004' || $ret_arr['error_code'] == '1003' ){
 		die($ret_arr['error_message']);
 	}
 	//保存正确的数据
-	file_put_contents(__DIR__.'/temp/worktile_access_token.json',$ret);
+	$saveAccessToken = $this->saveAccessToken;
+	$saveAccessToken($ret);
 	header('location: /worktile/user/profile');exit;
 
 });
 //人个资料
 $app->get('/worktile/user/profile',function($request, $response, $args){
-	$access_token_str = file_get_contents(__DIR__.'/temp/worktile_access_token.json');
-	$access_token = json_decode($access_token_str,true);
-	var_dump($access_token);
-
+	$access_token = $this->worktile_access_token;
 	//
 	$url = 'https://api.worktile.com/v1/user/profile';
 	$ch = curl_init();
@@ -165,14 +161,11 @@ $app->get('/worktile/user/profile',function($request, $response, $args){
 	var_dump($ret);
 	echo '</pre>';
 	echo '<a href="/worktile/projects">获取用户所有项目</a>';
-
 });
 //获取用户所有项目
 $app->get('/worktile/projects',function ($request, $response, $args)
 {
-	$access_token_str = file_get_contents(__DIR__.'/temp/worktile_access_token.json');
-	$access_token = json_decode($access_token_str,true);
-
+	$access_token = $this->worktile_access_token;
 	$url = 'https://api.worktile.com/v1/projects';
 	$ch = curl_init();
 	curl_setopt($ch,CURLOPT_HTTPHEADER,array(
@@ -196,8 +189,7 @@ $app->get('/worktile/projects',function ($request, $response, $args)
 //获取项目成员
 $app->get('/worktile/project_members/{pid}',function ($request, $response, $args)
 {
-	$access_token_str = file_get_contents(__DIR__.'/temp/worktile_access_token.json');
-	$access_token = json_decode($access_token_str,true);
+	$access_token = $this->worktile_access_token;
 
 	$url = 'https://api.worktile.com/v1/projects/'.$args['pid'].'/members';
 	$ch = curl_init();
@@ -210,7 +202,6 @@ $app->get('/worktile/project_members/{pid}',function ($request, $response, $args
 	curl_setopt($ch, CURLOPT_URL, $url);
 	$ret = curl_exec($ch);
 	curl_close($ch);
-	$status = $response->getStatusCode();
 	$ret = json_decode($ret,true);
 	echo '获取项目成员';
 	echo '<pre>';
@@ -221,8 +212,7 @@ $app->get('/worktile/project_members/{pid}',function ($request, $response, $args
 //获取项目的任务组列表
 $app->get('/worktile/entries/{pid}',function ($request, $response, $args)
 {
-	$access_token_str = file_get_contents(__DIR__.'/temp/worktile_access_token.json');
-	$access_token = json_decode($access_token_str,true);
+	$access_token = $this->worktile_access_token;
 
 	$url = 'https://api.worktile.com/v1/entries?pid='.$args['pid'];
 	$ch = curl_init();
@@ -246,8 +236,7 @@ $app->get('/worktile/entries/{pid}',function ($request, $response, $args)
 //创建任务
 $app->get('/worktile/task/{pid}/{entry_id}',function ($request, $response, $args)
 {
-	$access_token_str = file_get_contents(__DIR__.'/temp/worktile_access_token.json');
-	$access_token = json_decode($access_token_str,true);
+	$access_token = $this->worktile_access_token;
 //curl -d 'name=还信用卡&entry_id=xxxx&desc=10月12号还信用卡' 'https://api.worktile.com/v1/task?pid=xxx&access_token=xxx'
 	$url = 'https://api.worktile.com/v1/task?pid='.$args['pid'];
 	$ch = curl_init();
@@ -275,8 +264,7 @@ $app->get('/worktile/task/{pid}/{entry_id}',function ($request, $response, $args
 
 //刷新token
 $app->get('/worktile/refresh_token',function ($request, $response, $args){
-	$access_token_str = file_get_contents(__DIR__.'/temp/worktile_access_token.json');
-	$access_token = json_decode($access_token_str,true);
+	$access_token = $this->worktile_access_token;
 
 	$url = 'https://api.worktile.com/oauth2/refresh_token?client_id=2b4ddbd6f526434285f62b0006cebc0f';
 	$ch = curl_init();
@@ -291,12 +279,15 @@ $app->get('/worktile/refresh_token',function ($request, $response, $args){
 	curl_close($ch);
 
 	$ret_arr = json_decode($ret,true);
-	var_dump($ret_arr);
 	if($ret_arr['error_code'] == '100009' || $ret_arr['error_code'] == '100008' ){
 		die($ret_arr['error_message']);
 	}
 	//保存正确的数据
-	file_put_contents(__DIR__.'/temp/worktile_access_token.json',$ret);
+	$saveAccessToken = $this->saveAccessToken;
+	$saveAccessToken($ret);
+
+
 });
+
 //-----------------------------------------------------------
 $app->run();
