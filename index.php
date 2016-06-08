@@ -123,16 +123,19 @@ $app->get('/worktile/response',function ($request, $response, $args)
 	}
 	$code = $_GET['code'];
 	var_dump($code);
-	$url = 'https://api.worktile.com/oauth2/access_token?client_id=2b4ddbd6f526434285f62b0006cebc0f&client_secret=3d6b481a3dc04bf183651e062cbfc0e6&code='.$code;
+	$url = 'https://api.worktile.com/oauth2/access_token';
 	$ch = curl_init();
         $this_header = array(
             'Content-Type:application/json'
         );
-
+    //post data
+    //?client_id=xxx&client_secret=yyy&code=zzz'
+     $post = ['client_id'=>'2b4ddbd6f526434285f62b0006cebc0f','client_secret'=>'3d6b481a3dc04bf183651e062cbfc0e6','code'=>$code];
     curl_setopt($ch,CURLOPT_HTTPHEADER,$this_header);
     curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
-    
+     curl_setopt($ch, CURLOPT_POST, TRUE);
+    curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($post));
     curl_setopt($ch, CURLOPT_URL, $url);
     $ret = curl_exec($ch);
     curl_close($ch);
