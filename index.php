@@ -19,8 +19,7 @@ if($_SERVER['SERVER_ADDR'] == '127.0.0.1'){
 $app = new Slim\App(["settings" => $config]);
 require_once 'container.config.php';
 $app->get('/', function ($request, $response, $args) {
-	// echo "hello world";
-	throw new Exception('ddd');
+	
 	header('location: /A');exit;
 });
 $app->get('/{who}', function ($request, $response, $args) {
