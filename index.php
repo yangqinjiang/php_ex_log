@@ -27,8 +27,6 @@ $app->get('/{who}', function ($request, $response, $args) {
 	$who = $args['who'];
 	if(empty($_SESSION['worktile_login']['__pid']) || empty($_SESSION['worktile_login']['__eid'])){
 			$pid = $eid = 0;
-			$_SESSION['worktile_login']['__pname'] = '未选择';
-			$_SESSION['worktile_login']['__ename'] = '未选择';
 	}else{
 			$pid = $_SESSION['worktile_login']['__pid'];
 			$eid = $_SESSION['worktile_login']['__eid'];
@@ -253,9 +251,22 @@ $app->get('/worktile/task/{pid}/{entry_id}/{who}/{key}',function ($request, $res
 	$who = $args['who'];
 	$key = $args['key'];
 	if(empty($who) || empty($key)){
+
 		return;
 	}
-	$msg = $who.'-'.$key;
+
+	if(empty($args['pid']) || empty($args['entry_id'])){
+		$pid = $_SESSION['worktile_login']['__pid'];
+		$eid = $_SESSION['worktile_login']['__eid'];
+	}else{
+		$pid = $args['pid'];
+		$eid = $args['entry_id'];
+	}
+
+	if(empty($pid) || empty($eid)){
+		return;
+	}
+
 	try {
 		$redis = new Redis();
 	   $redis->connect('127.0.0.1');
@@ -269,7 +280,7 @@ $app->get('/worktile/task/{pid}/{entry_id}/{who}/{key}',function ($request, $res
 	$msg = 'TRACE::'.$msg['msg'].'::请找出此bug的原因,并解决它.http://trace.qbgoo.com/detail/'.$who.'/'.$key;
 	$access_token = $this->worktile_access_token;
 //curl -d 'name=还信用卡&entry_id=xxxx&desc=10月12号还信用卡' 'https://api.worktile.com/v1/task?pid=xxx&access_token=xxx'
-	$url = 'https://api.worktile.com/v1/task?pid='.$args['pid'];
+	$url = 'https://api.worktile.com/v1/task?pid='.$pid;
 	$ch = curl_init();
 	curl_setopt($ch,CURLOPT_HTTPHEADER,array(
 			'Content-Type: application/json',
@@ -279,15 +290,15 @@ $app->get('/worktile/task/{pid}/{entry_id}/{who}/{key}',function ($request, $res
 	curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
 	curl_setopt($ch, CURLOPT_URL, $url);
 	curl_setopt($ch, CURLOPT_POST, TRUE);
-	$post = ['name'=>'来自[异常捕获系统]的任务'.date('Y-m-d H:i:s',time()),'entry_id'=>$args['entry_id'],'desc'=>$msg];
+	$post = ['name'=>'来自[异常捕获系统]的任务'.date('Y-m-d H:i:s',time()),'entry_id'=>$eid,'desc'=>$msg];
 	$post_str = json_encode($post);
 	curl_setopt($ch, CURLOPT_POSTFIELDS, $post_str);
 	$ret = curl_exec($ch);
 	curl_close($ch);
 	echo $ret;
 	//存档
-        var_dump($redis->sAdd('ok_post:'.$who,$key));
-        var_dump($redis->sCard('ok_post:'.$who));
+	$redis->sAdd('ok_post:'.$who,$key);
+	$redis->sCard('ok_post:'.$who);
 	exit;
 });
 

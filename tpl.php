@@ -43,13 +43,19 @@
 <?php
 	if(!empty($_SESSION['worktile_login'])){
 		echo 'worktile用户:'.$_SESSION['worktile_login']['name'].'-'.$_SESSION['worktile_login']['display_name'].'--><a href="/worktile/logout">退出</a>';
-		echo '&nbsp;&nbsp;&nbsp;'.$_SESSION['worktile_login']['__pname'].'-'.$_SESSION['worktile_login']['__ename'];
+		if(empty($_SESSION['worktile_login']['__pname']) || empty($_SESSION['worktile_login']['__ename'])){
+			echo '&nbsp;&nbsp;&nbsp;请点击<a target="_blank" href="/worktile/setting">设置</a>,选择项目及其任务列表';
+		}else{
+			echo '&nbsp;&nbsp;&nbsp;'.$_SESSION['worktile_login']['__pname'].'-'.$_SESSION['worktile_login']['__ename'];
+			echo '&nbsp;&nbsp;&nbsp;<a target="_blank" href="/worktile/setting">设置</a>';
+		}
+		
 	}else{
 		echo '<span id="wa"></span>';
 	}
 
 ?>
-&nbsp;&nbsp;&nbsp;<a target="_blank" href="/worktile/setting">设置</a>
+
 <div id="prefix_bar">
 
 </div>
