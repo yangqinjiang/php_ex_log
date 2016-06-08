@@ -53,7 +53,7 @@ class Tracer
     {
         // echo $msg;
         $out = '';
-        preg_match_all('/QBGOO-->((.*)[GTRNCOGL]):\s/x',$str2,$out);
+        preg_match_all('/QBGOO-->((.*)[GTRNCOGL]):\s/x',$msg,$out);
         if(empty($out[1])){//匹配不成功
             return;
         }
