@@ -152,6 +152,7 @@ $app->get('/worktile/response',function ($request, $response, $args)
 	header('location: /worktile/user/profile');exit;
 
 });
+//人个资料
 $app->get('/worktile/user/profile',function($request, $response, $args){
 	$access_token_str = file_get_contents(__DIR__.'/temp/worktile_access_token.json');
 	$access_token = json_decode($access_token_str,true);
@@ -169,6 +170,108 @@ $app->get('/worktile/user/profile',function($request, $response, $args){
 	curl_setopt($ch, CURLOPT_URL, $url);
 	$ret = curl_exec($ch);
 	curl_close($ch);
+
+	$ret = json_decode($ret,true);
+	echo '人个资料';
+	var_dump($ret);
+	echo '<a href="/worktile/projects">获取用户所有项目</a>';
+
+});
+//获取用户所有项目
+$app->get('/worktile/projects',function ($request, $response, $args)
+{
+	$access_token_str = file_get_contents(__DIR__.'/temp/worktile_access_token.json');
+	$access_token = json_decode($access_token_str,true);
+
+	$url = 'https://api.worktile.com/v1/projects';
+	$ch = curl_init();
+	curl_setopt($ch,CURLOPT_HTTPHEADER,array(
+			'Content-Type: application/json',
+			'access_token: ' . $access_token['access_token'])
+	);
+	curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
+	curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+	curl_setopt($ch, CURLOPT_URL, $url);
+	$ret = curl_exec($ch);
+	curl_close($ch);
+	$ret = json_decode($ret,true);
+	echo '获取用户所有项目';
+	var_dump($ret);
+	
+	echo '<a href="/worktile/project_members">获取项目成员</a>';
+});
+
+//获取项目成员
+$app->get('/worktile/project_members/{pid}',function ($request, $response, $args)
+{
+	$access_token_str = file_get_contents(__DIR__.'/temp/worktile_access_token.json');
+	$access_token = json_decode($access_token_str,true);
+
+	$url = 'https://api.worktile.com/v1/projects/'.$args['pid'].'/members';
+	$ch = curl_init();
+	curl_setopt($ch,CURLOPT_HTTPHEADER,array(
+			'Content-Type: application/json',
+			'access_token: ' . $access_token['access_token'])
+	);
+	curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
+	curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+	curl_setopt($ch, CURLOPT_URL, $url);
+	$ret = curl_exec($ch);
+	curl_close($ch);
+	$status = $response->getStatusCode();
+	$ret = json_decode($ret,true);
+	echo '获取项目成员';
+	var_dump($ret);
+	echo '<a href="/worktile/entries">获取项目成员</a>';
+});
+//获取项目的任务组列表
+$app->get('/worktile/entries/{pid}',function ($request, $response, $args)
+{
+	$access_token_str = file_get_contents(__DIR__.'/temp/worktile_access_token.json');
+	$access_token = json_decode($access_token_str,true);
+
+	$url = 'https://api.worktile.com/v1/entries?pid'.$args['pid'];
+	$ch = curl_init();
+	curl_setopt($ch,CURLOPT_HTTPHEADER,array(
+			'Content-Type: application/json',
+			'access_token: ' . $access_token['access_token'])
+	);
+	curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
+	curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+	curl_setopt($ch, CURLOPT_URL, $url);
+	$ret = curl_exec($ch);
+	curl_close($ch);
+	$ret = json_decode($ret,true);
+	echo '获取项目的任务组列表';
+	var_dump($ret);
+	echo '<a href="/worktile/task">创建任务</a>';
+});
+
+//创建任务
+$app->get('/worktile/task/{pid}/{entry_id}',function ($request, $response, $args)
+{
+	$access_token_str = file_get_contents(__DIR__.'/temp/worktile_access_token.json');
+	$access_token = json_decode($access_token_str,true);
+//curl -d 'name=还信用卡&entry_id=xxxx&desc=10月12号还信用卡' 'https://api.worktile.com/v1/task?pid=xxx&access_token=xxx'
+	$url = 'https://api.worktile.com/v1/task?pid='.$args['pid'];
+	$ch = curl_init();
+	curl_setopt($ch,CURLOPT_HTTPHEADER,array(
+			'Content-Type: application/json',
+			'access_token: ' . $access_token['access_token'])
+	);
+	curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
+	curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+	curl_setopt($ch, CURLOPT_URL, $url);
+	curl_setopt($ch, CURLOPT_POST, TRUE);
+	$post = ['name'=>'测试','entry_id'=>$args['entry_id'],'desc'=>'测试任务的描述'];
+	$post_str = json_encode($post);
+	curl_setopt($ch, CURLOPT_POSTFIELDS, $post_str);
+	$ret = curl_exec($ch);
+	curl_close($ch);
+	$ret = json_decode($ret,true);
+
+
+	echo '创建任务';
 	var_dump($ret);
 });
 //-----------------------------------------------------------
