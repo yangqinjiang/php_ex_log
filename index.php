@@ -320,6 +320,7 @@ $app->get('/worktile/refresh_token',function ($request, $response, $args){
 //退出worktile账号
 $app->get('/worktile/logout',function($request, $response, $args){
 	unset($_SESSION['worktile_login']);
+	session_destroy();
 	header('location: /A');exit;
 });
 
