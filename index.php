@@ -128,7 +128,7 @@ $app->get('/worktile/response',function ($request, $response, $args)
     //post data
     //?client_id=xxx&client_secret=yyy&code=zzz'
      $post = ['client_id'=>'2b4ddbd6f526434285f62b0006cebc0f','client_secret'=>'3d6b481a3dc04bf183651e062cbfc0e6','code'=>$code];
-     $post_str = http_build_query($post);
+     $post_str = json_encode($post);
     curl_setopt($ch,CURLOPT_HTTPHEADER,array(                                                                          
 	    'Content-Type: application/json',                                                                                
 	    'Content-Length: ' . strlen($post_str))
