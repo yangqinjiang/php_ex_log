@@ -25,8 +25,15 @@ $app->get('/', function ($request, $response, $args) {
 $app->get('/{who}', function ($request, $response, $args) {
 	
 	$who = $args['who'];
-	$pid = $_SESSION['worktile_login']['__pid'];
-	$eid = $_SESSION['worktile_login']['__eid'];
+	if(empty($_SESSION['worktile_login']['__pid']) || empty($_SESSION['worktile_login']['__eid'])){
+			$pid = $eid = 0;
+			$_SESSION['worktile_login']['__pname'] = '未选择';
+			$_SESSION['worktile_login']['__ename'] = '未选择';
+	}else{
+			$pid = $_SESSION['worktile_login']['__pid'];
+			$eid = $_SESSION['worktile_login']['__eid'];
+	}
+
 	include 'tpl.php'; 
     return $response;
 });
@@ -245,6 +252,9 @@ $app->get('/worktile/task/{pid}/{entry_id}/{who}/{key}',function ($request, $res
 {
 	$who = $args['who'];
 	$key = $args['key'];
+	if(empty($who) || empty($key)){
+		return;
+	}
 	$msg = $who.'-'.$key;
 	try {
 		$redis = new Redis();
