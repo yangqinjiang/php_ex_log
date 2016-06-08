@@ -175,6 +175,9 @@ $app->get('/worktile/user/profile',function($request, $response, $args){
 	curl_close($ch);
 
 	$ret = json_decode($ret,true);
+	if($ret['error_code'] == '100005' || $ret['error_code'] == '100006'){
+		die($ret['error_message']);
+	}
 	$_SESSION['worktile_login'] = $ret;
 	header('location: /');exit;
 });
