@@ -284,5 +284,31 @@ $app->get('/worktile/task/{pid}/{entry_id}',function ($request, $response, $args
 	var_dump($ret);
 	echo '</pre>';
 });
+
+//刷新token
+$app->get('/worktile/refresh_token',function ($request, $response, $args){
+	$access_token_str = file_get_contents(__DIR__.'/temp/worktile_access_token.json');
+	$access_token = json_decode($access_token_str,true);
+
+	$url = 'https://api.worktile.com/oauth2/refresh_token?client_id=2b4ddbd6f526434285f62b0006cebc0f';
+	$ch = curl_init();
+	curl_setopt($ch,CURLOPT_HTTPHEADER,array(
+			'Content-Type: application/json',
+			'refresh_token: ' . $access_token['refresh_token'])
+	);
+	curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
+	curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+	curl_setopt($ch, CURLOPT_URL, $url);
+	$ret = curl_exec($ch);
+	curl_close($ch);
+
+	$ret_arr = json_decode($ret,true);
+	var_dump($ret_arr);
+	if($ret_arr['error_code'] == '100009' || $ret_arr['error_code'] == '100008' ){
+		die($ret_arr['error_message']);
+	}
+	//保存正确的数据
+	file_put_contents(__DIR__.'/temp/worktile_access_token.json',$ret);
+});
 //-----------------------------------------------------------
 $app->run();
