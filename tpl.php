@@ -20,6 +20,9 @@
 		}
 		ul li pre{
 			font-size: 24px;
+			white-space: pre-wrap;
+    		word-wrap: break-word;
+    		    background-color: #FBFBFB;
 		}
 		#prefix_bar{
 			margin-top: 10px;
