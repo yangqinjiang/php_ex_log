@@ -68,7 +68,7 @@ $container['phpErrorHandler'] = function ($c)
         if($exception instanceof \Exception){
             $msg = $now .'-->'.$exception->getMessage().'-->line:'.$exception->getLine().'-->file:'.$exception->getFile();
         }
-        $c->tracer->record(array('msg'=>$msg));
+        $c->tracer->record(array('msg'=>$msg),'A');
         return $c['response']->withStatus(500)
                              ->withHeader('Content-Type', 'text/html')
                              ->write('phpErrorHandler went wrong!');

@@ -98,7 +98,7 @@ $app->post('/record',function($request, $response, $args){
 	$prefix_pool = $this->trace_pool;
 
 
-	$this->tracer->record(array('msg'=>$msg),empty($prefix_pool[$prefix_key]) ? '' : $prefix_pool[$prefix_key]);
+	$this->tracer->record(array('msg'=>$msg),empty($prefix_pool[$prefix_key]) ? 'A' : $prefix_pool[$prefix_key]);
 	$response->withJson(array('code'=>200,'msg'=>$msg));
 	return $response;
 });
