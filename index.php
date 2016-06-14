@@ -58,10 +58,10 @@ $app->get('/list/{who}',function($request,$response,$args){
 					)
 			));
 		foreach ($raw_msg as $key => $value) {
+			$item = (array)json_decode($value);
 			if(empty($item['id'])){
 				continue;
 			}
-			$item = (array)json_decode($value);
 			$exist = $redis->sIsMember('ok_post:'.$who,$item['id']);
 			if($exist){
 				unset($raw_msg[$key]);

@@ -86,7 +86,8 @@
 
 
  	$.get('/list/<?php echo $who; ?>',function (data) {
- 		// console.log(data);
+ 		console.log(data);
+ 		// JSON.
  		var html = template('prefix',data);
  		// console.log(html);
  		document.getElementById('prefix_bar').innerHTML = html;
