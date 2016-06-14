@@ -69,7 +69,7 @@ $app->get('/list/{who}',function($request,$response,$args){
 			}
 			$raw_msg[$key] = $item;
 		}
-
+		ob_clean();
 		$response->withJson(['prefix_pool'=>$prefix_pool,'list'=>$raw_msg]);
 });
 $app->get('/kill/{who}/{key}',function ($request, $response, $args){
