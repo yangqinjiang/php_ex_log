@@ -5,7 +5,7 @@
 	
 	<script type="text/javascript" src="artTemplate.js"></script>
 	
-	<script type="text/javascript" src="http://libs.useso.com/js/zepto/1.1.3/zepto.min.js"></script>
+	<script type="text/javascript" src="/js/zepto.min.js"></script>
 	<style type="text/css">
 	ul li{
 		padding: 10px;
