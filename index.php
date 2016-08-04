@@ -89,6 +89,10 @@ $app->get('/list_limit/{who}',function($request,$response,$args){
 
 	//只取前5条数据
 	$ids = $redis->zRevRange('ex_post:'.$who,0,5);
+	$d = [];
+	foreach ($ids as $id){
+		$d[] = $redis->hMGet('ex_post:postid:'.$who.':'.$id,'msg');
+	}
 //	var_dump($ids);
 //	$raw_msg = $redis->sort('ex_post:'.$who,array(
 //		'by'=>'ex_post:postid:'.$who.':*->time',
@@ -110,7 +114,7 @@ $app->get('/list_limit/{who}',function($request,$response,$args){
 //		$raw_msg[$key] = $item;
 //	}
 //	ob_clean();
-	$response->withJson(['prefix_pool'=>$prefix_pool,'list'=>$ids]);
+	$response->withJson(['prefix_pool'=>$prefix_pool,'list_id'=>$ids,'list'=>$d]);
 });
 $app->get('/kill/{who}/{key}',function ($request, $response, $args){
 	$who = $args['who'];
