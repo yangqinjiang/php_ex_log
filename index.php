@@ -101,7 +101,6 @@ $app->get('/list_limit/{who}/{page}/{perPage}',function($request,$response,$args
 		$d[] = $redis->hMGet('ex_post:postid:'.$who.':'.$id,['msg']);
 	}
 
-	$dd = [];
 	foreach ($d as $key => $value) {
 		$item = (array)json_decode($value);
 		if(empty($item['id'])){
@@ -113,10 +112,9 @@ $app->get('/list_limit/{who}/{page}/{perPage}',function($request,$response,$args
 			unset($d[$key]);
 			continue;
 		}
-		$dd['msg'] = json_decode($item['msg']);
 	}
 	ob_clean();
-	$response->withJson(['prefix_pool'=>$prefix_pool,'list_id'=>$ids,'list'=>$dd]);
+	$response->withJson(['prefix_pool'=>$prefix_pool,'list_id'=>$ids,'list'=>$d]);
 });
 $app->get('/kill/{who}/{key}',function ($request, $response, $args){
 	$who = $args['who'];
