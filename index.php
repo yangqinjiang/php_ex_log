@@ -93,7 +93,7 @@ $app->get('/list_limit/{who}/{page}/{perPage}',function($request,$response,$args
 	$page = empty($args['page']) ? 0 : $args['page'];
 	$perPage = empty($args['perPage']) ? 0 : $args['perPage'];
 
-	$min = ($page-1)*10;
+	$min = ($page-1)*$perPage;
 	$size = $min+$perPage;
 	$ids = $redis->zRevRange('ex_post:'.$who,$min,$size);
 	$d = [];
