@@ -72,7 +72,7 @@ $app->get('/list/{who}',function($request,$response,$args){
 		ob_clean();
 		$response->withJson(['prefix_pool'=>$prefix_pool,'list'=>$raw_msg]);
 });
-$app->get('/list_limit/{who}',function($request,$response,$args){
+$app->get('/list_limit/{who}/{page}/{perPage}',function($request,$response,$args){
 	try {
 		$redis = new Redis();
 		$redis->connect('127.0.0.1');
@@ -86,9 +86,16 @@ $app->get('/list_limit/{who}',function($request,$response,$args){
 	if(!in_array(strtoupper($who), array_values($prefix_pool))){
 		$who = 'A';
 	}
-
+//当需要查询某个主题某一页的评论时，就可主题的topicId通过指令
+//zrevrange topicId (page-1)×10 (page-1)×10+perPage
+//这样就能找出某个主题下某一页的按时间排好顺序的所有评论的commintId。page为查询第几页的页码，perPage为每页显示的条数。
 	//只取前5条数据
-	$ids = $redis->zRevRange('ex_post:'.$who,0,5);
+	$page = empty($args['page']) ? 0 : $args['page'];
+	$perPage = empty($args['perPage']) ? 0 : $args['perPage'];
+
+	$min = ($page-1)*10;
+	$size = $min+$perPage;
+	$ids = $redis->zRevRange('ex_post:'.$who,$min,$size);
 	$d = [];
 	foreach ($ids as $id){
 		$d[] = $redis->hMGet('ex_post:postid:'.$who.':'.$id,['msg']);
