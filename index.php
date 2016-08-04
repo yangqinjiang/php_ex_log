@@ -91,7 +91,7 @@ $app->get('/list_limit/{who}',function($request,$response,$args){
 	$ids = $redis->zRevRange('ex_post:'.$who,0,5);
 	$d = [];
 	foreach ($ids as $id){
-		$d[] = $redis->hMGet('ex_post:postid:'.$who.':'.$id,'msg');
+		$d[] = $redis->hMGet('ex_post:postid:'.$who.':'.$id,['msg']);
 	}
 //	var_dump($ids);
 //	$raw_msg = $redis->sort('ex_post:'.$who,array(
