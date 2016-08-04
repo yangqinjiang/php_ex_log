@@ -87,6 +87,10 @@
 
  	$.get('/list_limit/<?php echo $who; ?>/1/25',function (data) {
  		console.log(data);
+		for(i=0;i<data.list.length;i++){
+			console.log(data.list[i].msg);
+			console.log(parseJSON(data.list[i].msg));
+		}
  		// JSON.
  		var html = template('prefix',data);
  		// console.log(html);
