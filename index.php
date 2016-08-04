@@ -116,7 +116,7 @@ $app->get('/list_limit/{who}/{page}/{perPage}',function($request,$response,$args
 		$dd['msg'] = json_decode($item['msg']);
 	}
 	ob_clean();
-	$response->withJson(['prefix_pool'=>$prefix_pool,'list_id'=>$ids,'list'=>$d]);
+	$response->withJson(['prefix_pool'=>$prefix_pool,'list_id'=>$ids,'list'=>$dd]);
 });
 $app->get('/kill/{who}/{key}',function ($request, $response, $args){
 	$who = $args['who'];
