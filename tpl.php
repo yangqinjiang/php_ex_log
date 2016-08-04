@@ -127,14 +127,14 @@
 		 $('#'+who).addClass('current');
 		 page = page +1;
 	 });
-	 var get_more_list_data =function () {
+	 var get_more_list_data = function () {
 		 list_data(who,page,size,function (data) {
 			 var html = template('list',data);
 			 // console.log(html);
 //			 document.getElementById('list_ul').innerHTML = html;
 			 $('#list_ul').append(html);
 			 page = page +1;
-		 }
+		 });
 	 }
 
 
