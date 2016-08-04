@@ -23,7 +23,6 @@ class Tracer
         if($this->ping()){
             return;
         }
-        
         $ex_postid = $this->redis->incr('global:ex_postid:'.$prefix);
         $data['time']=time();//记录时间
         $msg = $data['msg'];

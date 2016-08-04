@@ -72,6 +72,46 @@ $app->get('/list/{who}',function($request,$response,$args){
 		ob_clean();
 		$response->withJson(['prefix_pool'=>$prefix_pool,'list'=>$raw_msg]);
 });
+$app->get('/list_limit/{who}',function($request,$response,$args){
+	try {
+		$redis = new Redis();
+		$redis->connect('127.0.0.1');
+		$redis->select(1);
+	} catch (Exception $e) {
+		echo $e->getMessage();
+		die('连不上Redis');
+	}
+	$prefix_pool = $this->trace_pool;
+	$who = $args['who'];
+	if(!in_array(strtoupper($who), array_values($prefix_pool))){
+		$who = 'A';
+	}
+
+	//只取前5条数据
+	$ids = $redis->zRevRange('ex_post:'.$who,0,5);
+//	var_dump($ids);
+//	$raw_msg = $redis->sort('ex_post:'.$who,array(
+//		'by'=>'ex_post:postid:'.$who.':*->time',
+//		'SORT'=>'DESC',
+//		'get'=>array(
+//			'ex_post:postid:'.$who.':*->msg'
+//		)
+//	));
+//	foreach ($raw_msg as $key => $value) {
+//		$item = (array)json_decode($value);
+//		if(empty($item['id'])){
+//			continue;
+//		}
+//		$exist = $redis->sIsMember('ok_post:'.$who,$item['id']);
+//		if($exist){
+//			unset($raw_msg[$key]);
+//			continue;
+//		}
+//		$raw_msg[$key] = $item;
+//	}
+//	ob_clean();
+	$response->withJson(['prefix_pool'=>$prefix_pool,'list'=>$ids]);
+});
 $app->get('/kill/{who}/{key}',function ($request, $response, $args){
 	$who = $args['who'];
 	$key = $args['key'];
