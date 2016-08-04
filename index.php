@@ -100,27 +100,20 @@ $app->get('/list_limit/{who}/{page}/{perPage}',function($request,$response,$args
 	foreach ($ids as $id){
 		$d[] = $redis->hMGet('ex_post:postid:'.$who.':'.$id,['msg']);
 	}
-//	var_dump($ids);
-//	$raw_msg = $redis->sort('ex_post:'.$who,array(
-//		'by'=>'ex_post:postid:'.$who.':*->time',
-//		'SORT'=>'DESC',
-//		'get'=>array(
-//			'ex_post:postid:'.$who.':*->msg'
-//		)
-//	));
-//	foreach ($raw_msg as $key => $value) {
-//		$item = (array)json_decode($value);
-//		if(empty($item['id'])){
-//			continue;
-//		}
-//		$exist = $redis->sIsMember('ok_post:'.$who,$item['id']);
-//		if($exist){
-//			unset($raw_msg[$key]);
-//			continue;
-//		}
-//		$raw_msg[$key] = $item;
-//	}
-//	ob_clean();
+
+	foreach ($d as $key => $value) {
+		$item = (array)json_decode($value);
+		if(empty($item['id'])){
+			continue;
+		}
+		$exist = $redis->sIsMember('ok_post:'.$who,$item['id']);
+		if($exist){
+			unset($d[$key]);
+			continue;
+		}
+		$raw_msg[$key] = $item;
+	}
+	ob_clean();
 	$response->withJson(['prefix_pool'=>$prefix_pool,'list_id'=>$ids,'list'=>$d]);
 });
 $app->get('/kill/{who}/{key}',function ($request, $response, $args){

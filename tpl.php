@@ -85,7 +85,7 @@
  <script type="text/javascript">
 
 
- 	$.get('/list/<?php echo $who; ?>',function (data) {
+ 	$.get('/list_limit/<?php echo $who; ?>/1/25',function (data) {
  		console.log(data);
  		// JSON.
  		var html = template('prefix',data);
