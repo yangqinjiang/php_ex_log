@@ -101,18 +101,19 @@ $app->get('/list_limit/{who}/{page}/{perPage}',function($request,$response,$args
 		$d[] = $redis->hMGet('ex_post:postid:'.$who.':'.$id,['msg']);
 	}
 
+	$dd = [];
 	foreach ($d as $key => $value) {
 		$item = (array)json_decode($value);
 		if(empty($item['id'])){
 			continue;
 		}
-		$item['msg'] = json_decode($item['msg']);
+
 		$exist = $redis->sIsMember('ok_post:'.$who,$item['id']);
 		if($exist){
 			unset($d[$key]);
 			continue;
 		}
-		$raw_msg[$key] = $item;
+		$dd['msg'] = json_decode($item['msg']);
 	}
 	ob_clean();
 	$response->withJson(['prefix_pool'=>$prefix_pool,'list_id'=>$ids,'list'=>$d]);
