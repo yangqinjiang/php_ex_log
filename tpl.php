@@ -89,7 +89,7 @@
  		console.log(data);
 		for(i=0;i<data.list.length;i++){
 			console.log(data.list[i].msg);
-			console.log(parseJSON(data.list[i].msg));
+			console.log(JSON.parse(data.list[i].msg));
 		}
  		// JSON.
  		var html = template('prefix',data);
