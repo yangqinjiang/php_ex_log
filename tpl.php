@@ -82,39 +82,62 @@
  <ul id="list_ul">
  	
  </ul>
-<a href="javascript:alert(1)">更多</a>
+<a href="javascript:get_more_list_data()">更多</a>
  <script type="text/javascript">
 
 
- 	$.get('/list_limit/<?php echo $who; ?>/1/25',function (data) {
- 		console.log(data);
-		for(i=0;i<data.list.length;i++){
-			data.list[i] = JSON.parse(data.list[i].msg);
-		}
- 		// JSON.
- 		var html = template('prefix',data);
- 		// console.log(html);
- 		document.getElementById('prefix_bar').innerHTML = html;
+	 function list_data(who,page,size,cb) {
+		 $.get('/list_limit/'+who+'/'+page+'/'+size,function (data) {
+			 console.log(data);
+			 for(i=0;i<data.list.length;i++){
+				 data.list[i] = JSON.parse(data.list[i].msg);
+			 }
+			 cb && cb(data);
 
- 		html = template('list',data);
- 		// console.log(html);
- 		document.getElementById('list_ul').innerHTML = html;
-		//
-	 	$('#list_ul a.a').bind('click',function (d) {
-	 		
-	 		var href = $(this).attr('_href');
-	 		$(this).parent().hide();
-	 		console.log(href);
-	 		var _this = $(this);
-	 		$.get(href,function (d) {
-	 		});
-	 	});
 
-	 	//渲染tab页面
-	 	var who = '<?php echo $who; ?>';
-	 	$('#'+who).addClass('current');
+		 },'json');
+	 }
 
- 	},'json');
+	 var who = '<?php echo $who; ?>';
+	 var page = 1;
+	 var size = 25;
+
+	 list_data(who,page,size,function (data) {
+		 // JSON.
+		 var html = template('prefix',data);
+		 // console.log(html);
+		 document.getElementById('prefix_bar').innerHTML = html;
+
+		 html = template('list',data);
+		 // console.log(html);
+		 document.getElementById('list_ul').innerHTML = html;
+		 //
+		 $('#list_ul a.a').bind('click',function (d) {
+
+			 var href = $(this).attr('_href');
+			 $(this).parent().hide();
+//				 console.log(href);
+			 var _this = $(this);
+			 $.get(href,function (d) {
+			 });
+		 });
+
+		 //渲染tab页面
+		 var who = '<?php echo $who; ?>';
+		 $('#'+who).addClass('current');
+		 page = page +1;
+	 });
+	 var get_more_list_data =function () {
+		 list_data(who,page,size,function (data) {
+			 var html = template('list',data);
+			 // console.log(html);
+//			 document.getElementById('list_ul').innerHTML = html;
+			 $('#list_ul').append(html);
+			 page = page +1;
+		 }
+	 }
+
+
 
 
 	 $.get('/worktile/authorize',function (d) {
