@@ -106,6 +106,7 @@ $app->get('/list_limit/{who}/{page}/{perPage}',function($request,$response,$args
 		if(empty($item['id'])){
 			continue;
 		}
+		$item['msg'] = json_decode($item['msg']);
 		$exist = $redis->sIsMember('ok_post:'.$who,$item['id']);
 		if($exist){
 			unset($d[$key]);
