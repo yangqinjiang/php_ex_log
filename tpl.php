@@ -100,7 +100,7 @@
 
 	 var who = '<?php echo $who; ?>';
 	 var page = 1;
-	 var size = 25;
+	 var size = 2500;
 
 	 list_data(who,page,size,function (data) {
 		 // JSON.
