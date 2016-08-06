@@ -162,7 +162,7 @@ $app->get('/detail/{who}/{key}',function ($request, $response, $args)
 	$id = $args['key'];
 	$who = $args['who'];
 	$d = $redis->hMGet('ex_post:postid:'.$who.':'.$id,['msg']);
-	print_r($d);
+	print_r(json_encode($d));
 	var_dump('显示更多内容,未实现');
 });
 //-----------------------------------------------------------
