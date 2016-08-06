@@ -151,6 +151,18 @@ $app->post('/record',function($request, $response, $args){
 });
 $app->get('/detail/{who}/{key}',function ($request, $response, $args)
 {
+	try {
+		$redis = new Redis();
+		$redis->connect('127.0.0.1');
+		$redis->select(1);
+	} catch (Exception $e) {
+		echo $e->getMessage();
+		die('连不上Redis');
+	}
+	$id = $args['key'];
+	$who = $args['who'];
+	$d = $redis->hMGet('ex_post:postid:'.$who.':'.$id,['msg']);
+	print_r($d);
 	var_dump('显示更多内容,未实现');
 });
 //-----------------------------------------------------------
