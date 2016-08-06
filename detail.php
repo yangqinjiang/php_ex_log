@@ -7,8 +7,10 @@
         <?php print_r($d); ?>
     </pre>
     <script>
-        var ddd = '<?php json_encode($d); ?>';
-        console.log(ddd);
+        var id = '<?php $id ?>';
+        var who = '<?php $who ?>';
+        console.log(id);
+        console.log(who);
     </script>
 </body>
 </html>
