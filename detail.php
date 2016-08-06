@@ -4,6 +4,14 @@
     <script type="text/javascript" src="/js/zepto.min.js"></script>
 </head>
 <body>
+<style>
+    #detail{
+        font-size: 24px;
+        white-space: pre-wrap;
+        word-wrap: break-word;
+        background-color: #FBFBFB;
+    }
+</style>
 <div id="detail">
 
 </div>
@@ -21,7 +29,7 @@
         list_data(who,id,function (data) {
             console.log(data.msg);
             ii = data.msg;
-            $('#detail').html(JSON.parse(data.msg));
+            $('#detail').html(JSON.parse(data.msg).msg);
         })
     </script>
 </body>
