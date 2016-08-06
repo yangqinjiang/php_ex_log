@@ -12,6 +12,7 @@
         var who = '<?php echo $who ?>';
         console.log(id);
         console.log(who);
+        var ii = '';
         function list_data(who,page,cb) {
             $.get('/detail_item/'+who+'/'+id,function (data) {
                 cb && cb(data);
@@ -19,6 +20,7 @@
         }
         list_data(who,id,function (data) {
             console.log(data.msg);
+            ii = data.msg;
             $('#detail').html(JSON.parse(data.msg));
         })
     </script>
