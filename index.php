@@ -166,7 +166,7 @@ $app->get('/detail/{who}/{key}',function ($request, $response, $args)
 	include 'detail.php';
 //	var_dump('显示更多内容,未实现');
 });
-$app->get('/detail_time/{who}/{key}',function ($request, $response, $args)
+$app->get('/detail_item/{who}/{key}',function ($request, $response, $args)
 {
 	try {
 		$redis = new Redis();
