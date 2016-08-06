@@ -163,8 +163,8 @@ $app->get('/detail/{who}/{key}',function ($request, $response, $args)
 	$who = $args['who'];
 //	$d = $redis->hMGet('ex_post:postid:'.$who.':'.$id,['msg']);
 //	print_r(json_encode($d));
-//	include 'detail.php';
-	var_dump('显示更多内容,未实现');
+	include 'detail.php';
+//	var_dump('显示更多内容,未实现');
 });
 $app->get('/detail_time/{who}/{key}',function ($request, $response, $args)
 {
