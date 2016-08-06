@@ -8,7 +8,7 @@ $container = $app->getContainer();
 //跟踪域名
 $container['trace_pool'] = function ($c)
 {
-    $prefix_pool = array('trace.qbgoo.com'=>'A','user.qbgoo.com'=>'B','lc.cengfan7.com'=>'C','cfq.cengfan7.com'=>'D','www.qbgoo.com'=>'E','cengfan7.cn'=>'F','api-test.cengfan7.cn'=>'G');
+    $prefix_pool = array('trace.qbgoo.com'=>'A','user.qbgoo.com'=>'B','lc.cengfan7.com'=>'C','cfq.cengfan7.com'=>'D','www.qbgoo.com'=>'E','cengfan7.cn'=>'F','api-test.cengfan7.cn'=>'G','H'=>'tpshop.cengfan7.cn');
     return $prefix_pool;  
 };
 //日志记录
