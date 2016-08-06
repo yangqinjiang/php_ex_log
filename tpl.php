@@ -76,7 +76,7 @@
 			&nbsp;&nbsp;&nbsp;
 			<a class="a"  title='创建worktile任务' _href='http://trace.qbgoo.com/worktile/task/<?php echo $pid; ?>/<?php echo $eid; ?>/<?php echo $who; ?>/{{value.id}}'>Task</a>
 			&nbsp;&nbsp;&nbsp;
-			<a class="a"  title='查看' target="_blank" href='http://trace.qbgoo.com/detail_item/<?php echo $who; ?>/{{value.id}}'>查看</a>
+			<a class="a"  title='查看' target="_blank" href='http://trace.qbgoo.com/detail/<?php echo $who; ?>/{{value.id}}'>查看</a>
 		<pre>{{value.msg}}</pre></li>
 		{{/each}}
 </script>
