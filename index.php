@@ -354,7 +354,7 @@ $app->get('/worktile/task/{pid}/{entry_id}/{who}/{key}',function ($request, $res
 	}
 	$msg = $redis->hMGet('ex_post:postid:'.$who.':'.$key,['msg']);
 	$msg = (array)json_decode($msg['msg']);
-	$msg = 'TRACE::'.$msg['msg'].'::请找出此bug的原因,并解决它.http://trace.qbgoo.com/detail/'.$who.'/'.$key;
+	$msg = 'TRACE::'.'::请找出此bug的原因,并解决它.http://trace.qbgoo.com/detail/'.$who.'/'.$key.'   '.$msg['msg'];
 	$access_token = $this->worktile_access_token;
 //curl -d 'name=还信用卡&entry_id=xxxx&desc=10月12号还信用卡' 'https://api.worktile.com/v1/task?pid=xxx&access_token=xxx'
 	$url = 'https://api.worktile.com/v1/task?pid='.$pid;
