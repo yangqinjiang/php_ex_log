@@ -181,6 +181,7 @@ $app->get('/detail_item/{who}/{key}',function ($request, $response, $args)
 	$d = $redis->hMGet('ex_post:postid:'.$who.':'.$id,['msg']);
 //	print_r(json_encode($d));
 	$response->withJson(array('code'=>200,'msg'=>$d));
+	return $response;
 });
 //-----------------------------------------------------------
 $app->get('/worktile/setting',function(){
