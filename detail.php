@@ -29,7 +29,8 @@
         list_data(who,id,function (data) {
             console.log(data.msg);
             ii = data.msg;
-            $('#detail').html(JSON.parse(data.msg).msg);
+            var msg = JSON.parse(ii.msg);
+            $('#detail').html(msg);
         })
     </script>
 </body>
