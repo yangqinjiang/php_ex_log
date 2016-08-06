@@ -100,7 +100,11 @@
 
 	 var who = '<?php echo $who; ?>';
 	 var page = 1;
-	 var size = 2500;
+	 var size = 250;
+	 var page_size = window.localStorage.getItem('page_size');
+	 if(page_size){
+		 size = page_size;
+	 }
 
 	 list_data(who,page,size,function (data) {
 		 // JSON.
