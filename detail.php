@@ -7,7 +7,7 @@
         <?php print_r($d); ?>
     </pre>
     <script>
-        var ddd = '<?php print_r($d); ?>';
+        var ddd = '<?php json_encode($d); ?>';
         console.log(ddd);
     </script>
 </body>
