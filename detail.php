@@ -30,7 +30,7 @@
             console.log(data.msg);
             ii = data.msg;
             msg = JSON.parse(ii.msg);
-            $('#detail').html(msg);
+            $('#detail').html(msg.msg);
         })
     </script>
 </body>
