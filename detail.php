@@ -4,18 +4,22 @@
     <script type="text/javascript" src="/js/zepto.min.js"></script>
 </head>
 <body>
+<div id="detail">
+
+</div>
     <script>
         var id = '<?php echo $id ?>';
         var who = '<?php echo $who ?>';
         console.log(id);
         console.log(who);
-        function list_data(who,page,size,cb) {
+        function list_data(who,page,cb) {
             $.get('/detail_item/'+who+'/'+id,function (data) {
                 cb && cb(data);
             },'json');
         }
         list_data(who,id,function (data) {
-            console.log(data);
+            console.log(data.msg);
+            $('#detail').html(JSON.parse(data.msg));
         })
     </script>
 </body>
