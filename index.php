@@ -143,7 +143,10 @@ $app->post('/record',function($request, $response, $args){
 	}
 	$uri = $request->getUri();
 	$prefix_pool = $this->trace_pool;
-
+	if(empty($prefix_pool[$prefix_key])){
+		$response->withJson(array('code'=>200,'msg'=>'不作记录'));
+		return $response;
+	}
 
 	$this->tracer->record(array('msg'=>$msg),empty($prefix_pool[$prefix_key]) ? 'A' : $prefix_pool[$prefix_key]);
 	$response->withJson(array('code'=>200,'msg'=>$msg));
